@@ -1,0 +1,8 @@
+---
+const { title, img, link } = Astro.props;
+---
+
+<a class="project-card" href={link} target="_blank">
+    <img src={img.src} alt={title} />
+    <h3>{title}</h3>
+</a>

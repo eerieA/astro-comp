@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SocialLink from "../components/SocialLink.astro";
+
+const socials = [
+    { name: "X (Twitter)", url: "https://x.com/eerieA1" },
+    { name: "Bluesky", url: "https://bsky.app/profile/eeriea.bsky.social" },
+];
+---
+
+<BaseLayout title="Socials | Jade Duan" currentPage="socials">
+    <h1>Social Links</h1>
+    <ul>
+        {socials.map((s) => <SocialLink {...s} />)}
+    </ul>
+</BaseLayout>
