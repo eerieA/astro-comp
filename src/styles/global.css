@@ -1,10 +1,11 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
     --color-*: initial;
-    --color-primary: #777777;
+    --color-primary: #000000;
     --color-primary-active: #000000;
-    --color-primary-hovered: #222222;
+    --color-primary-hovered: #555555;
 }
 
 body {

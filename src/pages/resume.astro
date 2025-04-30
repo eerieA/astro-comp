@@ -2,23 +2,15 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageSection from "../components/PageSection.astro";
 import { SITE_NAME, LOCATION, EMAIL, LINK1 } from "../config";
+
+import { marked } from "marked";
+import resumeMarkdown from "../content/resume.md?raw";
+const md = marked.parse(resumeMarkdown);
+// const md = marked.parse('# Marked in the browser\n\nRendered by **marked**.');
 ---
 
 <BaseLayout title="Resume" currentPage="resume">
     <PageSection title="Resume">
-        <h3 class="font-semibold">{SITE_NAME}</h3>
-        <p class="text-sm">
-            {LOCATION} | {EMAIL} | {LINK1}
-        </p>
-
-        <h3 class="text-sm mt-6 font-semibold">Work Experiences</h3>
-        <div>
-            <p class="text-sm">Network Support Tools Developer – UBC IT</p>
-            <p class="text-sm text-gray-700">Sep 2023 – Sep 2024</p>
-            <ul class="text-sm list-disc ml-5">
-                <li>Built Python tools for configuration validation...</li>
-            </ul>
-        </div>
-        <!-- ...etc -->
+        <article class="prose prose-sm prose-sky" set:html={md} />
     </PageSection>
 </BaseLayout>
