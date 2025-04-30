@@ -11,6 +11,11 @@ const md = marked.parse(resumeMarkdown);
 
 <BaseLayout title="Resume" currentPage="resume">
     <PageSection title="Resume">
-        <article class="prose prose-sm prose-sky" set:html={md} />
+        <div class="max-h-[calc(70vh-10rem)] lg:max-h-[calc(92vh-10rem)] overflow-y-auto">
+            <article
+                class="prose max-w-none prose-sm prose-sky prose-p:leading-5 prose-ul:leading-5"
+                set:html={md}
+            />
+        </div>
     </PageSection>
 </BaseLayout>

@@ -3,19 +3,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageSection from "../components/PageSection.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 
-import gitpeekThumb from "../assets/thumbnails/400x300.png";
-import habitThumb from "../assets/thumbnails/400x300.png";
+// import gitpeekThumb from "../assets/thumbnails/400x300.png";
 
 const projects = [
 	{
 		title: "Git Peek",
-		img: gitpeekThumb,
+		img: "https://live.staticflickr.com/65535/54483803224_5e420aca25_b.jpg",
 		link: "https://github.com/eerieA/gitpeek-lang",
 		description: "A GitHub language analyzer that renders SVG stats.",
 	},
 	{
 		title: "NDL View",
-		img: habitThumb,
+		img: "https://live.staticflickr.com/65535/54483803224_5e420aca25_b.jpg",
 		link: "https://github.com/eerieA/ndl-view",
 		description: "A minimalist viewer for node-link diagram data.",
 	},
@@ -24,7 +23,11 @@ const projects = [
 
 <BaseLayout title="Home" currentPage="home">
 	<PageSection title="Skills">
-		<p>Languages: C/C++.</p>
+		<p class="text-sm">
+			🔨: Python, JavaScript, C#, Java, C, C++, SQL, Julia, R, Pytest,
+			Junit, Cypress <br />
+			💡: RESTful API design, architectures, infrastructures, algorithm design
+		</p>
 	</PageSection>
 	<PageSection title="Projects">
 		<div class="w-full flex flex-col grid gap-4 sm:grid-cols-1">
