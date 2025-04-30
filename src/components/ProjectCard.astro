@@ -1,8 +1,22 @@
 ---
-const { title, img, link } = Astro.props;
+const { title, img, link, description } = Astro.props;
 ---
 
-<a class="project-card" href={link} target="_blank">
-    <img src={img.src} alt={title} />
-    <h3>{title}</h3>
+<a
+    href={link}
+    target="_blank"
+    class="flex gap-2 bg-white shadow-xs hover:shadow-sm transition-shadow border-l-4 border-primary"
+>
+    <!-- Left: Thumbnail -->
+    <img
+        src={img.src}
+        alt={title}
+        class="w-32 h-24 object-cover flex-shrink-0"
+    />
+
+    <!-- Right: Text content -->
+    <div class="p-2 flex flex-col">
+        <h3 class="text-primary-active">{title}</h3>
+        <p class="text-sm text-primary mt-1">{description}</p>
+    </div>
 </a>
