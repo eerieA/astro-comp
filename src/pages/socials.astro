@@ -11,8 +11,10 @@ const socials = [
 
 <BaseLayout title="Socials" currentPage="socials">
     <PageSection title="Social links">
-        <ul>
-            {socials.map((s) => <SocialLink {...s} />)}
-        </ul>
+        <div class="flex flex-col items-center lg:items-start md:items-center">
+            <ul>
+                {socials.map((s) => <SocialLink {...s} />)}
+            </ul>
+        </div>
     </PageSection>
 </BaseLayout>
