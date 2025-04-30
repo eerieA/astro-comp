@@ -1,14 +1,14 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageSection from "../components/PageSection.astro";
-import { SITE_NAME } from "../config";
+import { SITE_NAME, LOCATION, EMAIL, LINK1 } from "../config";
 ---
 
 <BaseLayout title="Resume" currentPage="resume">
     <PageSection title="Resume">
         <h3 class="font-semibold">{SITE_NAME}</h3>
         <p class="text-sm">
-            Burnaby, BC | jade.duan.earth@gmail.com | github.com/eerieA
+            {LOCATION} | {EMAIL} | {LINK1}
         </p>
 
         <h3 class="text-sm mt-6 font-semibold">Work Experiences</h3>
