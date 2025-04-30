@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageSection from "../components/PageSection.astro";
 import SocialLink from "../components/SocialLink.astro";
 
 const socials = [
@@ -8,9 +9,10 @@ const socials = [
 ];
 ---
 
-<BaseLayout title="Socials | Jade Duan" currentPage="socials">
-    <h1>Social Links</h1>
-    <ul>
-        {socials.map((s) => <SocialLink {...s} />)}
-    </ul>
+<BaseLayout title="Socials" currentPage="socials">
+    <PageSection title="Social links">
+        <ul>
+            {socials.map((s) => <SocialLink {...s} />)}
+        </ul>
+    </PageSection>
 </BaseLayout>

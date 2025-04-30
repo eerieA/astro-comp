@@ -1,28 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+    --color-*: initial;
+    --color-primary: #777777;
+    --color-primary-active: #000000;
+    --color-primary-hovered: #222222;
+}
+
 body {
     margin: 0;
     font-family: sans-serif;
     padding: 1rem;
-}
-
-header nav {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-bottom: 2rem;
-}
-
-.project-card {
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    margin: auto;
-    text-align: center;
-}
-
-.project-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
 }
 
 .grid {

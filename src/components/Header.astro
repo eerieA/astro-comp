@@ -1,0 +1,43 @@
+---
+import "../styles/global.css";
+import siteIcon from "../assets/icon.svg";
+import { SITE_NAME } from "../config";
+
+const { currentPage } = Astro.props;
+
+const navLinks = [
+    { name: "Home", path: "/", key: "home" },
+    { name: "Resume", path: "/resume", key: "resume" },
+    { name: "Socials", path: "/socials", key: "socials" },
+];
+---
+
+<header class="bg-white">
+    <nav
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-start justify-between"
+    >
+        <!-- Left: Icon + Name -->
+        <div class="flex items-center gap-3">
+            <img src={siteIcon.src} alt="Site icon" class="w-8 h-8" />
+            <span class="font-bold">{SITE_NAME}</span>
+        </div>
+
+        <!-- Right: Navigation Links -->
+        <div class="flex gap-6">
+            {
+                navLinks.map(({ name, path, key }) => (
+                    <a
+                        href={path}
+                        class={
+                            currentPage === key
+                                ? "text-primary-active font-bold"
+                                : "text-primary hover:text-primary-hovered"
+                        }
+                    >
+                        {name}
+                    </a>
+                ))
+            }
+        </div>
+    </nav>
+</header>
