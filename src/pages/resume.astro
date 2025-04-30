@@ -1,15 +1,24 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageSection from "../components/PageSection.astro";
+import { SITE_NAME } from "../config";
 ---
 
 <BaseLayout title="Resume" currentPage="resume">
     <PageSection title="Resume">
-        <iframe
-            src="/resume.pdf"
-            width="100%"
-            height="800px"
-            style="border: none;"></iframe>
-        <p><a href="/resume.pdf" download>Download PDF</a></p>
+        <h3 class="font-semibold">{SITE_NAME}</h3>
+        <p class="text-sm">
+            Burnaby, BC | jade.duan.earth@gmail.com | github.com/eerieA
+        </p>
+
+        <h3 class="text-sm mt-6 font-semibold">Work Experiences</h3>
+        <div>
+            <p class="text-sm">Network Support Tools Developer – UBC IT</p>
+            <p class="text-sm text-gray-700">Sep 2023 – Sep 2024</p>
+            <ul class="text-sm list-disc ml-5">
+                <li>Built Python tools for configuration validation...</li>
+            </ul>
+        </div>
+        <!-- ...etc -->
     </PageSection>
 </BaseLayout>
