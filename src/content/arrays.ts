@@ -3,13 +3,19 @@ export const projects = [
         title: "Git Peek",
         videoSrc: "/videos/git-peek.mp4",
         link: "https://github.com/eerieA/gitpeek-lang",
-        description: "A GitHub language analyzer that renders SVG stats.",
+        description: "A GitHub language analyzer that aggregates data from Github API and renders SVG stats. <C#, .NET>",
     },
     {
         title: "NDL View",
         videoSrc: "/videos/ndl-view.mp4",
         link: "https://github.com/eerieA/ndl-view",
-        description: "A minimalist viewer for Nasdaq Data Link crypto exchange rate data.",
+        description: "A minimalist viewer for Nasdaq Data Link crypto exchange rate data. <Angular, RESTful API>",
+    },
+    {
+        title: "Coding Quizzes",
+        videoSrc: "/videos/coding-quizzes.mp4",
+        link: "https://github.com/eerieA/coding-tutor-log-only",
+        description: "A Coding Quiz app project made with 4 teammates, using Docker, llama, etc. <Python, LLM>",
     },
 ];
 

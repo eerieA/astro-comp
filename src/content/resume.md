@@ -1,4 +1,4 @@
-## Jane Doe
+## Jade Duan
 
 Burnaby, BC | jade.duan.earth@gmail.com | [GitHub](https://github.com/eerieA)
 

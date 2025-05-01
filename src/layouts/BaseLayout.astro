@@ -1,7 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import "../styles/global.css";
-import profileImage from "../assets/avatar.svg"; // replace with your actual image path
+import profileImage from "../assets/avatar.png"; // replace with your actual image path
 import { SITE_NAME } from "../config";
 const { currentPage } = Astro.props;
 
@@ -14,6 +14,10 @@ const summary = marked.parse(summaryMarkdown);
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Different types of favicon, browser will pick one -->
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <title>{SITE_NAME}</title>
     </head>
     <body
