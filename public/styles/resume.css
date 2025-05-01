@@ -1,0 +1,57 @@
+.resume-preview {
+    font-family: "Cambria", serif;
+    font-size: 0.85rem;
+    color: #222;
+    line-height: 1.40em;
+    padding: 36px;
+    /* max-width: 800px; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.resume-preview h1,
+.resume-preview h2,
+.resume-preview h3,
+.resume-preview h4 {
+    color: #222;
+    font-weight: bold;
+    margin-top: 0.6em;
+    margin-bottom: 0.4em;
+}
+
+.resume-preview h3,
+.resume-preview h4 {
+    border-bottom: #aaa solid 1px;
+}
+
+.resume-preview h1 {
+    font-size: 2.2rem;
+}
+
+.resume-preview h2 {
+    font-size: 1.50rem;
+}
+
+.resume-preview h3 {
+    font-size: 1.20rem;
+}
+
+.resume-preview p {
+    margin: 0.2rem 0;
+}
+
+.resume-preview a {
+    color: #3e8abd;
+}
+
+.resume-preview ul,
+.resume-preview ol {
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+    margin-left: -1.2rem;
+}
+
+.resume-preview ul li,
+.resume-preview ol li {
+    margin-bottom: 0.0rem;
+}

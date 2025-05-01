@@ -1,0 +1,8 @@
+---
+import { marked } from "marked";
+import resumeMarkdown from "../content/resume.md?raw";
+const md = marked.parse(resumeMarkdown);
+---
+
+<link rel="stylesheet" href="/styles/resume.css" />
+<article class="resume-preview prose" set:html={md}/>

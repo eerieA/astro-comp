@@ -7,23 +7,31 @@ import { projects } from "../content/arrays";
 ---
 
 <BaseLayout title="Home" currentPage="home">
-	<PageSection title="Skills">
-		<p class="text-sm">
-			🔨: Python, JavaScript, C#, Java, C, C++, SQL, Julia, R, Pytest,
-			Junit, Cypress <br />
-			💡: RESTful API design, architectures, infrastructures, algorithm design
-		</p>
-	</PageSection>
-	<PageSection title="Projects">
-		<div class="w-full flex flex-col grid gap-4 sm:grid-cols-1">
-			{projects.map((project) => <ProjectCard {...project} />)}
-		</div>
-		<br>
-		<p class="text-sm">More to come...</p>
-	</PageSection>
-	<PageSection title="Latest degree">
-		<p class="text-sm">
-			B.Sc., Computer Science - University of British Columbia (Vancouver)
-		</p>
-	</PageSection>
+	<div
+		class="flex flex-col max-h-[calc(70vh-6.2rem)] lg:max-h-[calc(92vh-6.2rem)] overflow-y-auto gap-4
+		mask-alpha mask-t-from-black mask-t-from-98% mask-t-to-transparent mt-[-6px] pt-[6px]
+		mask-alpha mask-b-from-black mask-b-from-98% mask-b-to-transparent pb-6"
+	>
+		<PageSection title="Skills">
+			<p class="text-sm">
+				🔨: Python, JavaScript, C#, Java, C, C++, SQL, Julia, R, Pytest,
+				Junit, Cypress <br />
+				💡: RESTful API design, architectures, infrastructures, algorithm
+				design
+			</p>
+		</PageSection>
+		<PageSection title="Projects">
+			<div class="w-full flex flex-col grid gap-4 sm:grid-cols-1">
+				{projects.map((project) => <ProjectCard {...project} />)}
+			</div>
+			<br />
+			<p class="text-sm">More to come...</p>
+		</PageSection>
+		<PageSection title="Latest degree">
+			<p class="text-sm">
+				B.Sc., Computer Science - University of British Columbia
+				(Vancouver)
+			</p>
+		</PageSection>
+	</div>
 </BaseLayout>
