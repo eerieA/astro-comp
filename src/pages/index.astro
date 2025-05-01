@@ -3,22 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageSection from "../components/PageSection.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 
-// import gitpeekThumb from "../assets/thumbnails/400x300.png";
-
-const projects = [
-	{
-		title: "Git Peek",
-		videoSrc: "/videos/sample.mp4",
-		link: "https://github.com/eerieA/gitpeek-lang",
-		description: "A GitHub language analyzer that renders SVG stats.",
-	},
-	{
-		title: "NDL View",
-		videoSrc: "/videos/sample.mp4",
-		link: "https://github.com/eerieA/ndl-view",
-		description: "A minimalist viewer for node-link diagram data.",
-	},
-];
+import { projects } from "../content/arrays";
 ---
 
 <BaseLayout title="Home" currentPage="home">

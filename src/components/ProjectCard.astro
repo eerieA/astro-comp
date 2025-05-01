@@ -3,30 +3,29 @@ const { title, videoSrc, link, description } = Astro.props;
 ---
 
 <div
-    class="flex bg-white shadow-xs hover:shadow-sm transition-shadow border-l-4 border-primary-hovered"
+    class="flex flex-col lg:flex-row sm:flex-row
+    items-center lg:items-start sm:items-start
+    bg-white hover:shadow-xs transition-shadow border-l-4 border-primary-hovered"
 >
     <!-- Left: Video thumbnail -->
     <video
         src={videoSrc}
         controls
-        class="w-48 h-32 object-cover flex-shrink-0"
+        class="w-full lg:w-48 lg:h-32 sm:w-48 sm:h-32 object-cover flex-shrink-0 hover:shadow-lg transition-shadow"
         muted
         loop
         playsinline></video>
 
     <!-- Right: Text content -->
-    <div class="w-full px-4 py-2 flex flex-col">
-        <!-- Title row with button -->
-        <div class="mb-1 flex justify-between items-center">
-            <h3 class="text-primary-active text-sm">{title}</h3>
-            <a
-                href={link}
-                target="_blank"
-                class="text-sm bg-white text-primary hover:text-primary-hovered"
-            >
-                Repo
-            </a>
+    <a href={link} target="_blank" class="w-full flex flex-col">
+        <div class="w-full px-4 py-2 flex flex-col">
+            <!-- Title row with button -->
+            <div class="mb-1 flex justify-between items-center">
+                <h3 class="text-primary-active text-sm">{title}</h3>
+                <p class="text-primary-hovered text-sm">Link</p>
+            </div>
+            <div class="border-b-1 border-primary-mute"></div>
+            <p class="text-sm italic text-primary-hovered">{description}</p>
         </div>
-        <p class="text-sm italic text-primary-hovered">{description}</p>
-    </div>
+    </a>
 </div>

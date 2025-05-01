@@ -1,9 +1,13 @@
 ---
 import Header from "../components/Header.astro";
-import { SITE_NAME } from "../config";
-const { currentPage } = Astro.props;
 import "../styles/global.css";
 import profileImage from "../assets/avatar.svg"; // replace with your actual image path
+import { SITE_NAME } from "../config";
+const { currentPage } = Astro.props;
+
+import { marked } from "marked";
+import summaryMarkdown from "../content/summary.md?raw";
+const summary = marked.parse(summaryMarkdown);
 ---
 
 <html lang="en">
@@ -12,7 +16,9 @@ import profileImage from "../assets/avatar.svg"; // replace with your actual ima
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{SITE_NAME}</title>
     </head>
-    <body class="bg-gray-50 text-primary flex flex-col items-center justify-items-stretch">
+    <body
+        class="bg-gray-50 text-primary flex flex-col items-center justify-items-stretch"
+    >
         <Header currentPage={currentPage} />
 
         <!-- Main layout container -->
@@ -21,18 +27,17 @@ import profileImage from "../assets/avatar.svg"; // replace with your actual ima
         >
             <!-- Sidebar -->
             <aside
-                class="w-full lg:w-[200px] bg-white flex flex-col items-center text-center"
+                class="w-full lg:w-[180px] bg-white flex flex-col items-center text-center lg:text-left"
             >
                 <img
                     src={profileImage.src}
                     alt="Profile"
                     class="w-24 h-24 rounded-full object-cover mb-4"
                 />
-                <p class="text-sm text-center lg:text-left text-primary-hovered">
-                    <span class="font-semibold">Hello</span> adventurer ✨! <br>
-                    This is {SITE_NAME}, a Computer Scientist, Software Engineer and Graphics Technician. <br>
-                    She is glad to see you here!
-                </p>
+                <article
+                    class="prose max-w-none prose-sm prose-sky prose-p:leading-5 prose-ul:leading-5"
+                    set:html={summary}
+                />
             </aside>
 
             <!-- Page content -->
