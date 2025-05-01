@@ -3,7 +3,7 @@ const { title, videoSrc, link, description } = Astro.props;
 ---
 
 <div
-    class="flex gap-2 bg-white shadow-xs hover:shadow-sm transition-shadow border-l-4 border-primary-hovered"
+    class="flex bg-white shadow-xs hover:shadow-sm transition-shadow border-l-4 border-primary-hovered"
 >
     <!-- Left: Video thumbnail -->
     <video
@@ -15,7 +15,7 @@ const { title, videoSrc, link, description } = Astro.props;
         playsinline></video>
 
     <!-- Right: Text content -->
-    <div class="w-full p-1 flex flex-col">
+    <div class="w-full px-4 py-2 flex flex-col">
         <!-- Title row with button -->
         <div class="mb-1 flex justify-between items-center">
             <h3 class="text-primary-active text-sm">{title}</h3>
