@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageSection from "../components/PageSection.astro";
 
+import DownloadIcon from "../icons/download.astro";
 import { marked } from "marked";
 import resumeMarkdown from "../content/resume.md?raw";
 const md = marked.parse(resumeMarkdown);
@@ -10,10 +11,20 @@ const md = marked.parse(resumeMarkdown);
 <BaseLayout title="Resume" currentPage="resume">
     <PageSection title="Resume">
         <div
-            class="max-h-[calc(70vh-10rem)] lg:max-h-[calc(92vh-10rem)] overflow-y-auto
+            class="relative max-h-[calc(70vh-10rem)] lg:max-h-[calc(92vh-10rem)] overflow-y-auto
 		mask-alpha mask-t-from-black mask-t-from-98% mask-t-to-transparent mt-[-6px] pt-[6px]
 		mask-alpha mask-b-from-black mask-b-from-98% mask-b-to-transparent pb-6"
         >
+            <!-- Download Button -->
+            <div class="flex justify-center">
+                <a
+                    href="/resume.pdf"
+                    download
+                    class="absolute top-2 right-2 pl-1 pr-2 py-[2px] flex flex-row items-center bg-primary rounded-xs text-sm text-primary-mute hover:bg-primary-mute hover:text-primary hover:shadow-sm transition-all"
+                >
+                    <DownloadIcon size="1.3em" color="text-white" /><p>pdf</p>
+                </a>
+            </div>
             <article
                 class="prose max-w-none prose-sm prose-sky prose-p:leading-5 prose-ul:leading-5"
                 set:html={md}

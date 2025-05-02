@@ -25,7 +25,7 @@ Lead Designer, Civil Engineer @ I&S Studio, Huayu Engineering, etc., *Pre-Feb 20
 
 #### Selected Projects
 
-Crypto Exchange Rate Viewer *(Professional)*, *Apr 2025 - May 2025*  
+Crypto Exchange Rate Viewer *(Personal)*, *Apr 2025 - May 2025*  
 - Implemented strong type safety to reduce runtime errors and enhance code maintainability.  
 - Secured 100% of sensitive API traffic via secret management using `.env` files and scoped fetch modules.  
 - Applied synchronization patterns for consistent and timely rate updates across components.

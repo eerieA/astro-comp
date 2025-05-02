@@ -1,11 +1,19 @@
 ---
-const { title, videoSrc, link, description } = Astro.props;
+interface Props {
+    title: string;
+    videoSrc: string;
+    link: string;
+    description: string;
+    tags?: string[];
+}
+
+const { title, videoSrc, link, description, tags = [] }: Props = Astro.props;
 ---
 
 <div
     class="flex flex-col lg:flex-row sm:flex-row
     items-center lg:items-start sm:items-start
-    bg-white hover:shadow-xs transition-shadow border-l-4 border-primary-hovered"
+    bg-white border-l-4 border-primary-hovered"
 >
     <!-- Left: Video thumbnail -->
     <video
@@ -17,15 +25,31 @@ const { title, videoSrc, link, description } = Astro.props;
         playsinline></video>
 
     <!-- Right: Text content -->
-    <a href={link} target="_blank" class="w-full flex flex-col">
-        <div class="w-full px-4 py-2 flex flex-col">
-            <!-- Title row with button -->
-            <div class="mb-1 flex justify-between items-center">
+    <div class="w-full px-4 flex flex-col">
+        <a href={link} target="_blank" class="w-full flex flex-col">
+            <!-- Title row -->
+            <div class="mb-1 flex justify-between items-center hover:underline">
                 <h3 class="text-primary-active text-sm">{title}</h3>
-                <p class="text-primary-hovered text-sm">Link</p>
+                <p class="text-primary-hovered text-sm">Source</p>
             </div>
             <div class="border-b-1 border-primary-mute"></div>
-            <p class="text-sm italic text-primary-hovered">{description}</p>
-        </div>
-    </a>
+            <!-- Description -->
+            <p class="mt-1 text-sm italic text-primary-hovered">
+                {description}
+            </p>
+        </a>
+
+        <!-- Tags -->
+        {
+            tags.length > 0 && (
+                <div class="mt-1 flex flex-wrap gap-1">
+                    {tags.map((tag) => (
+                        <span class="bg-primary-mute px-1 py-0.5 text-primary-hovered text-xs italic rounded-xs">
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+            )
+        }
+    </div>
 </div>

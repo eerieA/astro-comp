@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import siteIcon from "../assets/icon.svg";
+import siteIcon from "../assets/brain-engine.svg";
 import { SITE_NAME } from "../config";
 
 const { currentPage } = Astro.props;
@@ -17,8 +17,8 @@ const navLinks = [
         class="max-w-7xl sm:px-2 lg:px-4 py-4 flex items-center justify-between"
     >
         <!-- Left: Icon + Name -->
-        <div class="flex items-center gap-3">
-            <img src={siteIcon.src} alt="Site icon" class="w-8 h-8" />
+        <div class="flex items-center gap-2">
+            <img src={siteIcon.src} alt="Site icon" class="w-6 h-6" />
             <span class="text-primary-hovered font-bold">{SITE_NAME}</span>
         </div>
 
