@@ -10,7 +10,7 @@ import summaryMarkdown from "../content/summary.md?raw";
 const summary = marked.parse(summaryMarkdown);
 ---
 
-<html lang="en">
+<html lang="en" class="overflow-hidden">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,7 +36,7 @@ const summary = marked.parse(summaryMarkdown);
                 <img
                     src={profileImage.src}
                     alt="Profile"
-                    class="w-24 h-24 rounded-full object-cover mb-4"
+                    class="w-20 h-20 lg:w-24 lg:h-24 rounded-full object-cover mb-4"
                 />
                 <article
                     class="prose max-w-none prose-sm prose-sky prose-p:leading-5 prose-ul:leading-5"

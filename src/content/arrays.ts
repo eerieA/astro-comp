@@ -24,8 +24,24 @@ export const projects = [
         title: "Coding Quizzes (2024)",
         videoSrc: "/videos/coding-quizzes.mp4",
         link: "https://github.com/eerieA/coding-tutor-log-only",
-        description: "A Coding Quiz app project made with 4 teammates, using Docker, llama, etc.",
-        tags: ["Python", "LLM"]
+        description: "A Coding Quiz app project made with 4 teammates, using Docker, llama, Node.js. Adopted Agile for project management.",
+        tags: ["Python", "LLM", "Node.js"]
+    },
+    {
+        title: "WebGL Vertex Rotation (2025)",
+        videoSrc: "https://player.vimeo.com/video/1080996280?h=6c79dad4f5",
+        link: "https://vimeo.com/1080996280/6c79dad4f5",
+        description: "A shader rotating vertices that are within proximity. (Source code is made private to honor academic integrity.)",
+        tags: ["WebGL", "GLSL"],
+        embed: true
+    },
+    {
+        title: "WebGL Toon Shading (2025)",
+        videoSrc: "https://player.vimeo.com/video/1080996287?h=fd1be7661e",
+        link: "https://vimeo.com/1080996287/fd1be7661e",
+        description: "A shader achieving toon shading through multipass rendering and Sobel filter. (Source code is made private to honor academic integrity.)",
+        tags: ["WebGL", "GLSL"],
+        embed: true
     },
 ];
 
