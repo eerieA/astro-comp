@@ -28,18 +28,18 @@ export const projects = [
         tags: ["Python", "LLM", "Node.js"]
     },
     {
-        title: "WebGL Vertex Rotation (2025)",
-        videoSrc: "https://player.vimeo.com/video/1080996280?h=6c79dad4f5",
-        link: "https://vimeo.com/1080996280/6c79dad4f5",
-        description: "A shader rotating vertices that are within proximity. (Source code is made private to honor academic integrity.)",
+        title: "WebGL Toon Shading (2025)",
+        videoSrc: "https://player.vimeo.com/video/1081457610",
+        link: "https://vimeo.com/1081457610",
+        description: "A shader achieving toon shading through multipass rendering and Sobel filter. (Source code is made private to honor academic integrity.)",
         tags: ["WebGL", "GLSL"],
         embed: true
     },
     {
-        title: "WebGL Toon Shading (2025)",
-        videoSrc: "https://player.vimeo.com/video/1080996287?h=fd1be7661e",
-        link: "https://vimeo.com/1080996287/fd1be7661e",
-        description: "A shader achieving toon shading through multipass rendering and Sobel filter. (Source code is made private to honor academic integrity.)",
+        title: "WebGL Vertex Explosion (2025)",
+        videoSrc: "https://player.vimeo.com/video/1080996280?h=6c79dad4f5",
+        link: "https://vimeo.com/1080996280/6c79dad4f5",
+        description: "A shader rotating vertices that are within proximity. (Source code is kept private to honor academic integrity.)",
         tags: ["WebGL", "GLSL"],
         embed: true
     },
