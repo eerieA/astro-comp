@@ -21,7 +21,7 @@ const summary = marked.parse(summaryMarkdown);
         <title>{SITE_NAME}</title>
     </head>
     <body
-        class="bg-gray-50 text-primary flex flex-col items-center justify-items-stretch"
+        class="bg-white text-primary flex flex-col items-center justify-items-stretch"
     >
         <Header currentPage={currentPage} />
 
@@ -39,7 +39,8 @@ const summary = marked.parse(summaryMarkdown);
                     class="w-20 h-20 lg:w-24 lg:h-24 rounded-full object-cover mb-4"
                 />
                 <article
-                    class="prose max-w-none prose-sm prose-sky prose-p:leading-5 prose-ul:leading-5"
+                    class="prose max-w-none prose-sm prose-sky prose-p:leading-5 prose-ul:leading-5
+                    text-neutral-600 dark:text-neutral-100 prose-strong:text-primary"
                     set:html={summary}
                 />
             </aside>

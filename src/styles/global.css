@@ -1,13 +1,90 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root {
+    /* light-mode values */
+    --color-primary: #282828;
+    --color-primary-active: #111111;
+    --color-primary-hovered: #646464;
+    --color-white: #fefefe;
+    --color-neutral-100: #f3f3f3;
+    --color-neutral-200: #e3e3e3;
+    --color-neutral-600: #444444;
+    --color-cyan-500: #646464;
+}
+
+[data-theme="dark"] {
+    /* dark-mode overrides */
+    --color-primary: #eeeeee;
+    --color-primary-active: #ffffff;
+    --color-primary-hovered: #e0e0e0;
+    --color-white: #282828;
+    --color-neutral-100: #d0d0d0;
+    --color-neutral-200: #505050;
+    --color-neutral-600: #444444;
+    --color-cyan-500: #d6d6d6;
+}
 
 @theme {
-    --color-*: initial;
-    --color-primary: #222222;
-    --color-primary-active: #111111;
-    --color-primary-hovered: #555555;
-    --color-primary-mute: #eeeeee;
-    --color-mute: #eeeeee;
+
+    /* --color-*: initial; */
+    --color-primary: {
+        color: var(--color-primary) !important;
+    }
+
+    --color-primary-active: {
+        color: var(--color-primary-active) !important;
+    }
+
+    --color-primary-hovered: {
+        color: var(--color-primary-hovered) !important;
+    }
+
+    --color-white: {
+        color: var(--color-white) !important;
+    }
+
+    --color-neutral-100: {
+        color: var(--color-neutral-100) !important;
+    }
+
+    --color-neutral-200: {
+        color: var(--color-neutral-200) !important;
+    }
+
+    --color-neutral-600: {
+        color: var(--color-neutral-600) !important;
+    }
+
+    --color-cyan-500: {
+        color: var(--color-cyan-500) !important;
+    }
+}
+
+/* Target all scrollbars in the site */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Track (background) */
+::-webkit-scrollbar-track {
+    background: var(--color-white);
+}
+
+/* Thumb (the draggable bar) */
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-hovered);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    /* for inset effect */
+    background-clip: content-box;
+}
+
+/* Thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-active);
 }
 
 body {

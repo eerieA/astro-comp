@@ -1,10 +1,10 @@
 ---
 import "../styles/global.css";
-import siteIcon from "../assets/brain-engine.svg";
 import { SITE_NAME } from "../config";
 
-const { currentPage } = Astro.props;
+import SiteIcon from "../icons/brain-engine.astro";
 
+const { currentPage } = Astro.props;
 const navLinks = [
     { name: "Home", path: "/", key: "home" },
     { name: "Resume", path: "/resume", key: "resume" },
@@ -12,18 +12,32 @@ const navLinks = [
 ];
 ---
 
+<!-- Theme flash prevention script -->
+<script is:inline>
+    // is:inline directive in Astro ensures it runs before any rendering occurs
+    const savedTheme = localStorage.getItem("theme");
+    if (
+        savedTheme === "dark" ||
+        (!savedTheme &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+        document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+        document.documentElement.removeAttribute("data-theme");
+    }
+</script>
+
 <header class="bg-white w-full sm:w-full lg:max-w-2/3">
     <nav
         class="max-w-7xl sm:px-2 lg:px-4 py-4 flex items-center justify-between"
     >
         <!-- Left: Icon + Name -->
         <div class="flex items-center gap-2">
-            <img src={siteIcon.src} alt="Site icon" class="w-6 h-6" />
+            <SiteIcon size="1.5em" color="text-primary-hovered" />
             <span class="text-primary-hovered font-bold">{SITE_NAME}</span>
         </div>
-
         <!-- Right: Navigation Links -->
-        <div class="flex gap-6">
+        <div class="flex gap-6 items-center">
             {
                 navLinks.map(({ name, path, key }) => (
                     <a
@@ -31,13 +45,68 @@ const navLinks = [
                         class={
                             currentPage === key
                                 ? "text-primary-active font-bold"
-                                : "text-primary hover:text-primary-hovered"
+                                : "text-primary hover:text-cyan-500"
                         }
                     >
                         {name}
                     </a>
                 ))
             }
+            <!-- Theme toggle button -->
+            <button
+                id="theme-toggle"
+                class="p-1 rounded-full text-neutral-100 dark:text-neutral-600
+                bg-neutral-700 dark:bg-neutral-100
+                hover:bg-black dark:hover:bg-primary transition-all"
+                aria-label="Toggle theme"
+            >
+                <!-- Sun icon -->
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4.5 w-4.5 dark:block hidden"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                    ></path>
+                </svg>
+                <!-- Moon icon -->
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4.5 w-4.5 dark:hidden block"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                    ></path>
+                </svg>
+            </button>
         </div>
     </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const themeToggle = document.getElementById("theme-toggle");
+            const htmlElement = document.documentElement;
+
+            if (!themeToggle) return; // Safeguard
+
+            themeToggle.addEventListener("click", () => {
+                const isDark =
+                    htmlElement.getAttribute("data-theme") === "dark";
+                htmlElement.setAttribute("data-theme", isDark ? "" : "dark");
+                localStorage.setItem("theme", isDark ? "light" : "dark");
+            });
+        });
+    </script>
 </header>

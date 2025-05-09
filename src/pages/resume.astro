@@ -20,13 +20,15 @@ const md = marked.parse(resumeMarkdown);
                 <a
                     href="/resume.pdf"
                     download
-                    class="absolute top-2 right-2 pl-1 pr-2 py-[2px] flex flex-row items-center bg-primary rounded-xs text-sm text-primary-mute hover:bg-primary-mute hover:text-primary hover:shadow-sm transition-all"
+                    class="absolute top-2 right-2 pl-1 pr-2 py-[2px] flex flex-row items-center bg-primary rounded-xs text-sm text-neutral-200 hover:bg-neutral-200 hover:text-primary hover:shadow-sm transition-all"
                 >
                     <DownloadIcon size="1.3em" color="text-white" /><p>pdf</p>
                 </a>
             </div>
             <article
-                class="prose max-w-none prose-sm prose-sky prose-p:leading-5 prose-ul:leading-5"
+                class="prose max-w-none prose-sm prose-sky dark:prose-yellow
+                prose-p:leading-5 prose-ul:leading-5
+                text-primary prose-strong:text-primary prose-headings:text-primary"
                 set:html={md}
             />
         </div>

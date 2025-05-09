@@ -21,7 +21,7 @@ const {
 <div
     class="flex flex-col lg:flex-row sm:flex-row
     items-center lg:items-start sm:items-start
-    bg-white border-l-4 border-primary-hovered"
+    bg-white border-l-4 border-neutral-600 dark:border-neutral-600"
 >
     <!-- Left: Video thumbnail or embed -->
     {
@@ -31,10 +31,11 @@ const {
             // We only do this for phone screens
             <div class="relative w-full pb-[56.25%] h-0 
                 lg:pb-0 sm:pb-0 lg:w-48 lg:h-32 sm:w-48 sm:h-32 
-                flex flex-col flex-shrink-0 justify-center overflow-hidden">
+                flex flex-col flex-shrink-0 justify-center overflow-hidden
+                hover:shadow-md dark:hover:shadow-neutral-600/50 transition-all">
 
                 {/* Background color layer to fill the gaps */}
-                <div class="absolute inset-0 bg-primary z-0"></div>
+                <div class="absolute inset-0 bg-primary dark:bg-[#303030] z-0"></div>
 
                 <iframe
                     src={videoSrc}
@@ -46,7 +47,8 @@ const {
             <video
                 src={videoSrc}
                 controls
-                class="w-full lg:w-48 lg:h-32 sm:w-48 sm:h-32 object-cover flex-shrink-0"
+                class="w-full lg:w-48 lg:h-32 sm:w-48 sm:h-32 object-cover flex-shrink-0
+                hover:shadow-md dark:hover:shadow-neutral-600/50 transition-all"
                 muted
                 loop
                 playsinline
@@ -62,9 +64,9 @@ const {
                 <h3 class="text-primary-active text-sm">{title}</h3>
                 <p class="text-primary-hovered text-sm">Source</p>
             </div>
-            <div class="border-b-1 border-primary-mute"></div>
+            <div class="border-b-1 border-neutral-200 dark:border-neutral-600"></div>
             <!-- Description -->
-            <p class="mt-1 text-sm italic text-primary-hovered">
+            <p class="mt-1 text-sm italic text-neutral-600 dark:text-neutral-100">
                 {description}
             </p>
         </a>
@@ -74,7 +76,7 @@ const {
             tags.length > 0 && (
                 <div class="mt-1 flex flex-wrap gap-1">
                     {tags.map((tag) => (
-                        <span class="bg-primary-mute px-1 py-0.5 text-primary-hovered text-xs italic rounded-xs">
+                        <span class="bg-neutral-200 px-1 py-0.5 text-neutral-600 dark:text-neutral-100 text-xs italic rounded-xs">
                             {tag}
                         </span>
                     ))}
