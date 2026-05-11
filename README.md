@@ -31,3 +31,44 @@ Sample video by <a href="https://pixabay.com/users/xbriantcx-36275440/?utm_sourc
 Download icon by Richard9394 from <a href="https://www.svgrepo.com/svg/431590/download-3">SVGRepo</a>.
 
 Brain Engine icon by Icooon Mono from <a href="https://www.svgrepo.com/svg/483592/brain-engine">SVGRepo</a>.
+
+## How to pull and push
+
+If set two remote hosts, one on Github, the other on Gitlab, need to do more than `git push`.
+
+For example if have these in .git/config:
+
+```txt
+...
+[remote "origin"]
+	url = https://github.com/<github-account>/astro-comp.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+[remote "gitlab"]
+	url = git@gitlab.com:<gitlab-account>/astro-comp.git
+	fetch = +refs/heads/*:refs/remotes/gitlab/*
+...
+```
+
+, then we may want to usually only pull from GitHub primary.
+
+```bash
+git pull origin main
+```
+
+And push to both.
+
+```bash
+git push origin main
+git push gitlab main
+```
+
+Can also add a global alias to push them both in one command (Powershell).
+
+```bash
+git config --global alias.pushall "!git push origin main && git push gitlab main"
+```
+
+This makes it less explicit though.

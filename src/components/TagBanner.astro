@@ -1,0 +1,65 @@
+---
+interface Props {
+    tags: string[];
+}
+const { tags } = Astro.props;
+// Duplicate for seamless loop
+const doubled = [...tags, ...tags];
+---
+
+<div class="tag-banner-wrapper" aria-label="Skills">
+    <ul class="tag-track" id="tag-track">
+        {doubled.map((tag) => (
+            <li class="tag-item">{tag}</li>
+        ))}
+    </ul>
+</div>
+
+<style>
+    .tag-banner-wrapper {
+        width: 100%;
+        overflow: hidden;
+        mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    }
+
+    .tag-track {
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+        margin: 0;
+        padding: 0.25rem 0;
+        width: max-content;
+        animation: marquee 18s linear infinite;
+    }
+
+    .tag-track.paused {
+        animation-play-state: paused;
+    }
+
+    .tag-item {
+        white-space: nowrap;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.55rem;
+        border-radius: 999px;
+        border: 1px solid var(--color-primary-hovered);
+        color: var(--color-primary);
+        background: transparent;
+        cursor: default;
+        user-select: none;
+    }
+
+    @keyframes marquee {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+    }
+</style>
+
+<script>
+    const track = document.getElementById("tag-track");
+    const wrapper = track?.parentElement;
+    if (wrapper && track) {
+        wrapper.addEventListener("mouseenter", () => track.classList.add("paused"));
+        wrapper.addEventListener("mouseleave", () => track.classList.remove("paused"));
+    }
+</script>

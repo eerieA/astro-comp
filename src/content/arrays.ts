@@ -1,3 +1,9 @@
+export const skills = [
+    "Python", "JavaScript", "C#", "Java", "C", "C++", "SQL", "Julia", "R",
+    "Pytest", "JUnit", "Cypress",
+    "RESTful API design", "System architecture", "Algorithm design",
+];
+
 export const projects = [
     {
         title: "NDL View (2025)",

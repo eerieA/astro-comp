@@ -12,14 +12,6 @@ import { projects } from "../content/arrays";
 		mask-alpha mask-t-from-black mask-t-from-98% mask-t-to-transparent mt-[-6px] pt-[6px]
 		mask-alpha mask-b-from-black mask-b-from-98% mask-b-to-transparent pb-6"
 	>
-		<PageSection title="Skills">
-			<p class="text-sm">
-				🔨: Python, JavaScript, C#, Java, C, C++, SQL, Julia, R, Pytest,
-				Junit, Cypress <br />
-				💡: RESTful API design, architectures, infrastructures, algorithm
-				design
-			</p>
-		</PageSection>
 		<PageSection title="Projects">
 			<div class="w-full flex flex-col grid gap-4 sm:grid-cols-1">
 				{projects.map((project) => <ProjectCard {...project} />)}

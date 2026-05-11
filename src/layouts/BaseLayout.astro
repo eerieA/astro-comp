@@ -1,5 +1,6 @@
 ---
 import Header from "../components/Header.astro";
+import TagBanner from "../components/TagBanner.astro";
 import "../styles/global.css";
 import profileImage from "../assets/avatar.png"; // replace with your actual image path
 import { SITE_NAME } from "../config";
@@ -8,6 +9,8 @@ const { currentPage } = Astro.props;
 import { marked } from "marked";
 import summaryMarkdown from "../content/summary.md?raw";
 const summary = marked.parse(summaryMarkdown);
+
+import { skills } from "../content/arrays";
 ---
 
 <html lang="en" class="overflow-hidden">
@@ -43,6 +46,9 @@ const summary = marked.parse(summaryMarkdown);
                     text-neutral-600 dark:text-neutral-100 prose-strong:text-primary"
                     set:html={summary}
                 />
+                <div class="mt-4 w-full">
+                    <TagBanner tags={skills} />
+                </div>
             </aside>
 
             <!-- Page content -->
