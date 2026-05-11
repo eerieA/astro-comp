@@ -1,7 +1,8 @@
 export const skills = [
-    "Python", "JavaScript", "C#", "Java", "C", "C++", "SQL", "Julia", "R",
-    "Pytest", "JUnit", "Cypress",
-    "RESTful API design", "System architecture", "Algorithm design",
+    "Python", "JavaScript", "C#", "Java", "C++", "SQL", "Julia", "R", "C", "Rust", "OpenGL",
+    "Pytest", "JUnit", "Jasmine", "Mocha",
+    "RESTful API", "System design", "DSA", "OOP", "TDD",
+    "Agentic coding", "Reinforcement learning"
 ];
 
 export const projects = [

@@ -4,13 +4,17 @@ Burnaby, BC | jade.duan.earth@gmail.com | [github.com/eerieA](https://github.com
 
 #### Technical Skills
 
-Python, JavaScript, C#, Java, C, C++, SQL, Julia, R, Pytest, Junit, Cypress  
-RESTful API design, architectures, infrastructures, algorithm design
+TypeScript, Python, C#, Java, SQL, MongoDB, Postgres, Pytest
+RESTful API, GraphQL, Software architecture, Test Driven Design, OOP
 
 #### Experiences  
 
+Programmer Analyst II @ UBC IT, *May 2025 - now*  
+- Developing a software platform to help orchestrate a dense, multi-layered campus network across 3 campuses, 2 hospitals, and 100+ facilities.  
+- Participate in technology researches, plausibility investigations, and development ceremonies.
+
 Software Developer Intern @ UBC IT, *Sep 2023 - Sep 2024*  
-- Developed a software tool to validate configurations for a dense, multi-layered network across 3 campuses, 2 hospitals, and 100+ facilities.  
+- Developed a software tool to validate configurations for a dense, multi-layered campus network.  
 - Maintained RESTful API tests for an in-house network tool, reducing recurring issues by 25%.  
 - Refactored APIs to enhance modularity, decreasing feature expansion time by 15%.  
 - Optimized Python-based inventory tool architecture, increasing code readability by 33%.
@@ -25,10 +29,10 @@ Lead Designer, Civil Engineer @ I&S Studio, Huayu Engineering, etc., *Pre-Feb 20
 
 #### Selected Projects
 
-Crypto Exchange Rate Viewer *(Personal)*, *Apr 2025 - May 2025*  
-- Implemented strong type safety to reduce runtime errors and enhance code maintainability.  
-- Secured 100% of sensitive API traffic via secret management using `.env` files and scoped fetch modules.  
-- Applied synchronization patterns for consistent and timely rate updates across components.
+Lightweight Markdown Workspace *(Personal)*, *Apr 2026 – Jun 2026*
+- Engineered a local-first Markdown workspace using React, TypeScript, and Tauri with dual persistence layers supporting both IndexedDB and native filesystem-backed vault storage
+- Implemented a cross-folder wikilink indexing and resolution pipeline enabling constant-time note title lookup across 500+ Markdown documents, including missing-reference detection and incremental search updates
+- Reduced infrastructure complexity and runtime overhead by eliminating backend services, cloud synchronization, and remote databases, achieving <300 ms auto-save latency with fully offline operation and direct local disk persistence
 
 Network Configuration Checker *(Professional)*, *Jan 2024 - Mar 2024*  
 - Designed the core algorithm and selected optimal data structures, improving validation speed by ~30%.  

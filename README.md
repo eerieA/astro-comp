@@ -24,14 +24,6 @@ Update contents in these four places:
 - *src/config.ts*  
     Global constants like site name. Probably rarely needs change.
 
-# Acknowledgement
-
-Sample video by <a href="https://pixabay.com/users/xbriantcx-36275440/?utm_source=link-attribution&utm_medium=referral&utm_campaign=video&utm_content=241802">Brian Tinco Custodio</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=video&utm_content=241802">Pixabay</a>
-
-Download icon by Richard9394 from <a href="https://www.svgrepo.com/svg/431590/download-3">SVGRepo</a>.
-
-Brain Engine icon by Icooon Mono from <a href="https://www.svgrepo.com/svg/483592/brain-engine">SVGRepo</a>.
-
 ## How to pull and push
 
 If set two remote hosts, one on Github, the other on Gitlab, need to do more than `git push`.
@@ -72,3 +64,53 @@ git config --global alias.pushall "!git push origin main && git push gitlab main
 ```
 
 This makes it less explicit though.
+
+## Troubleshooting: Stuck Astro/Vite Dev Ports on Windows
+
+Sometimes `Ctrl+C` does not fully terminate the Astro/Vite dev server on Windows, leaving ports such as `4321` occupied.
+
+### Use WSL (most reliable)
+Running the project inside WSL2/Linux generally avoids Windows process cleanup issues.
+
+### Kill a specific port
+Install:
+
+```bash
+npm install -g kill-port
+```
+
+Then:
+
+```bash
+kill-port 4321
+```
+
+### Find and kill the owning process manually
+
+Find listening processes:
+
+```powershell
+netstat -ano | findstr ":432" | findstr "LISTENING"
+```
+
+Kill by PID:
+
+```powershell
+taskkill /PID <PID> /F
+```
+
+### Kill all Node.js processes
+
+```powershell
+taskkill /IM node.exe /F
+```
+
+Useful when multiple stale Vite/Astro processes remain alive.
+
+# Acknowledgement
+
+Sample video by <a href="https://pixabay.com/users/xbriantcx-36275440/?utm_source=link-attribution&utm_medium=referral&utm_campaign=video&utm_content=241802">Brian Tinco Custodio</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=video&utm_content=241802">Pixabay</a>
+
+Download icon by Richard9394 from <a href="https://www.svgrepo.com/svg/431590/download-3">SVGRepo</a>.
+
+Brain Engine icon by Icooon Mono from <a href="https://www.svgrepo.com/svg/483592/brain-engine">SVGRepo</a>.

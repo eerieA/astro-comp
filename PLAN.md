@@ -85,24 +85,24 @@ Enhance the existing Astro portfolio with interactive components, multiple visua
 
 ## Phase 5: CI-Automated PDF Resume Generation
 
-**Goal**: Auto-regenerate `public/resume.pdf` on every push so the download button always reflects the latest markdown content.
+**Goal**: Auto-regenerate a PDF for every resume variant (`resume.md`, `resume-fe.md`, etc.) on every push so all download buttons always reflect the latest markdown content.
 
 **How it works**:
-1. GitHub Actions workflow triggers on push to `main`
-2. Workflow runs `astro build` (needed so `/resume-print` exists to be visited)
-3. Runs `astro preview` in the background, waits for it to be ready
-4. Runs `npm run resume` (Puppeteer visits `/resume-print`, saves PDF)
-5. Commits the updated `public/resume.pdf` back to the repo
+1. GitHub Actions workflow triggers on push to `main` when any `src/content/resume*.md` changes
+2. Workflow runs `astro build` then starts the Node server (`node dist/server/entry.mjs`)
+3. Waits for the server to be ready
+4. For each known variant, Puppeteer visits the corresponding `/resume-print?aud=<variant>` page and saves a PDF to `public/resume-<variant>.pdf`; the default `/resume-print` saves to `public/resume.pdf`
+5. Commits all updated PDFs back to the repo
 
 **File**: `.github/workflows/generate-resume.yml`
 
 ```yaml
-name: Generate Resume PDF
+name: Generate Resume PDFs
 on:
   push:
     branches: [main]
     paths:
-      - 'src/content/resume.md'   # only trigger when resume content changes
+      - 'src/content/resume*.md'
 
 jobs:
   generate-pdf:
@@ -114,22 +114,23 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build
-      - run: npm run preview &
+      - run: HOST=0.0.0.0 node dist/server/entry.mjs &
       - run: npx wait-on http://localhost:4321
-      - run: npm run resume
-      - name: Commit updated PDF
+      - run: npm run resume   # must iterate over all variants
+      - name: Commit updated PDFs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/resume.pdf
-          git diff --staged --quiet || git commit -m "chore: regenerate resume PDF [skip ci]"
+          git add public/resume*.pdf
+          git diff --staged --quiet || git commit -m "chore: regenerate resume PDFs [skip ci]"
           git push
 ```
 
-> **Note**: The `[skip ci]` tag prevents the bot commit from triggering another workflow run. The `paths` filter avoids running on unrelated pushes.
+> **Note**: The `[skip ci]` tag prevents the bot commit from triggering another workflow run. The `paths` filter avoids running on unrelated pushes. The `npm run resume` script (`src/print-resume.js`) needs to be updated to iterate over all variants and save each to its own PDF file.
 
 **Files**:
 - Create: `.github/workflows/generate-resume.yml`
+- Modify: `src/print-resume.js` (iterate variants, save `public/resume-<variant>.pdf` per variant)
 
 ---
 
