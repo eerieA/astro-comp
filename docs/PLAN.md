@@ -61,24 +61,29 @@ Enhance the existing Astro portfolio with interactive components, multiple visua
 
 ## Phase 3: Interactive Project Grid
 
-**Goal**: 3D vertical scroll carousel + tilt/flip cards
+**Goal**: Embedded Three.js scene with a spatial grid of interactive 3D project cards
 
 **Components**:
-- `ProjectCarousel.svelte` - main 3D carousel container
-- `ProjectCard3D.svelte` - interactive card variant
+- `GalleryCanvas.svelte` - owns the Three.js lifecycle (renderer, scene, camera, animation loop, resize, cleanup)
 
 **Features**:
-- Scroll-driven: carousel moves as user scrolls vertically
-- Vertical layout
-- Unusual/uneven tile sizes for visual interest
-- Mobile: fall back to stacked grid with hover effects only
-- Intersection Observer for lazy loading
-- Cards tilt on hover using CSS 3D transforms
-- 3D depth effect with perspective transforms
+- Cards are thin 3D box meshes with static screenshot textures on the face
+- Staggered spatial grid layout with small depth offsets and slight rotations for cinematic feel
+- Subtle idle float animation per card
+- Raycasting-driven hover: scale + glow response on the hovered card
+- Scroll interpolation: gallery shifts position as user scrolls through the section
+- Minimal camera movement (slight parallax, no full navigation)
+- Optional subtle bloom postprocessing
+- Mobile: fall back to stacked DOM grid (no Three.js) to avoid performance issues on low-power devices
+
+**Tech**:
+- `three` (vanilla, no React Three Fiber)
+- `@astrojs/svelte` + `svelte` (Svelte wraps the canvas lifecycle)
+- Card textures: static screenshots per project (not video), stored in `public/images/projects/`
 
 **Files**:
-- Create: `src/components/ProjectCarousel.svelte`
-- Create: `src/components/ProjectCard3D.svelte`
+- Create: `src/components/GalleryCanvas.svelte`
+- Add: static project screenshot images to `public/images/projects/`
 - Modify: `src/pages/index.astro`
 
 ---
@@ -154,26 +159,28 @@ jobs:
 ```json
 {
   "@astrojs/svelte": "^5.0.0",
-  "svelte": "^5.0.0"
+  "svelte": "^5.0.0",
+  "three": "^0.170.0"
 }
 ```
-
-> **Note**: `svelte-motion` was considered but excluded — it targets Svelte 3 and is unmaintained. All 3D effects use native CSS transforms (`perspective`, `rotateX/Y`, `translateZ`) driven by Svelte `mousemove`/`scroll` event handlers instead.
 
 ---
 
 ## Build Order
 
-1. Tag banner (simple, good warm-up)
-2. Remove existing dark/light toggle from `Header.astro`
-3. Theme system foundation (CSS variables + localStorage)
-4. Theme CSS for all 5 themes
-5. Theme toggle UI (floating button)
-6. 3D carousel component (CSS scroll-driven + JS fallback for Safari)
-7. Card tilt/flip effects
-8. Mobile fallbacks
-9. Final integration
-10. GitHub Actions workflow for PDF generation
+1. ~~Tag banner~~ ✓ done
+2. ~~SSR + `?aud=` resume variants~~ ✓ done
+3. Remove existing dark/light toggle from `Header.astro`
+4. Theme system foundation (CSS variables + localStorage)
+5. Theme CSS for all 5 themes
+6. Theme toggle UI (floating button)
+7. Install `@astrojs/svelte`, `svelte`, `three`
+8. Add static project screenshot images to `public/images/projects/`
+9. Build `GalleryCanvas.svelte` (scene, cards, raycasting, hover, float animation)
+10. Scroll interpolation for gallery
+11. Mobile fallback (DOM grid)
+12. Final integration into `index.astro`
+13. GitHub Actions workflow for PDF generation
 
 ---
 
