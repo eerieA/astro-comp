@@ -3,8 +3,9 @@
 
     const { projects } = $props();
 
-    // ── Mobile detection ────────────────────────────────────────────────────
-    let isMobile = $state(false);
+    // ── Mobile detection (reactive, driven by ResizeObserver) ───────────────
+    const MOBILE_BREAKPOINT = 560;
+    let isMobile = $state(false); // real value set in onMount (window not available during SSR)
 
     // ── Canvas ref ──────────────────────────────────────────────────────────
     let canvasEl;
@@ -13,8 +14,13 @@
     let dispose = () => {};
 
     onMount(async () => {
-        isMobile = window.matchMedia("(max-width: 768px)").matches;
-        if (isMobile) return;
+        // Wait one tick so the canvas element is measured correctly
+        await new Promise((r) => requestAnimationFrame(r));
+
+        if (window.innerWidth <= MOBILE_BREAKPOINT) {
+            isMobile = true;
+            return;
+        }
 
         const THREE = await import("three");
 
@@ -25,7 +31,7 @@
             alpha: true,
         });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setSize(canvasEl.clientWidth, canvasEl.clientHeight);
+        renderer.setSize(canvasEl.clientWidth, canvasEl.clientHeight, false);
 
         // ── Scene + camera ───────────────────────────────────────────────────
         const scene = new THREE.Scene();
@@ -48,16 +54,29 @@
         // Card face is 16:9-ish, thin depth
         const CARD_W = 1.0;
         const CARD_H = 1.0;
-        const CARD_D = 0.1;
+        const CARD_D = 0.2;
 
         // Grid: 2 cols × N rows, spacing
         const COLS = 2;
         const GAP_X = 0.28;
-        const GAP_Y = 0.32;
+        const GAP_Y = 0.48;
         const GRID_W = COLS * CARD_W + (COLS - 1) * GAP_X;
 
         // ── Texture loader ───────────────────────────────────────────────────
         const loader = new THREE.TextureLoader();
+
+        // ── Shared gradient texture for side/back faces ──────────────────────
+        // Drawn once on a small offscreen canvas, shared across all cards
+        const gradCanvas = document.createElement("canvas");
+        gradCanvas.width = 64;
+        gradCanvas.height = 64;
+        const gctx = gradCanvas.getContext("2d");
+        const grad = gctx.createLinearGradient(0, 0, 64, 64);
+        grad.addColorStop(0, "#1e2a3a");
+        grad.addColorStop(1, "#0d1520");
+        gctx.fillStyle = grad;
+        gctx.fillRect(0, 0, 64, 64);
+        const gradTex = new THREE.CanvasTexture(gradCanvas);
 
         // ── Card group (parallax target) ─────────────────────────────────────
         const group = new THREE.Group();
@@ -65,6 +84,10 @@
 
         // Per-card data for animation + interaction
         const cards = [];
+
+        // Label strip dimensions
+        const LABEL_H = 0.22;
+        const LABEL_GAP = 0.10; // gap between card bottom and label top
 
         projects.forEach((proj, i) => {
             const col = i % COLS;
@@ -80,7 +103,7 @@
             const depthOffset = (Math.random() - 0.5) * 0.0;
             const yRotOffset = (Math.random() - 0.5) * 0.0; // ±~10°
 
-            // Materials: front face gets texture, sides get plain dark
+            // Front face texture
             const texture = loader.load(`/images/projects/${proj.image}`);
             texture.colorSpace = THREE.SRGBColorSpace;
 
@@ -90,7 +113,7 @@
                 emissiveIntensity: 0,
             });
             const sideMat = new THREE.MeshStandardMaterial({
-                color: 0x1a1a2e,
+                map: gradTex,
                 emissive: new THREE.Color(0x000000),
                 emissiveIntensity: 0,
             });
@@ -102,6 +125,47 @@
 
             mesh.position.set(bx, by, depthOffset);
             mesh.rotation.y = yRotOffset;
+
+            // ── Tag label strip ──────────────────────────────────────────────
+            const tags = (proj.tags || []).slice(0, 3);
+            const labelCanvas = document.createElement("canvas");
+            const LCW = 256;
+            const LCH = 56;
+            const TAG_SPACING = 22;
+            labelCanvas.width = LCW;
+            labelCanvas.height = LCH;
+            const lctx = labelCanvas.getContext("2d");
+
+            // Background — solid color
+            lctx.fillStyle = "#1e2a3a";
+            lctx.roundRect(0, 0, LCW, LCH, 6);
+            lctx.fill();
+
+            // Tag text (no pill background)
+            lctx.font = "bold 24px sans-serif";
+            let px = 4;
+            const py = LCH / 2;
+            tags.forEach((tag) => {
+                const tw = lctx.measureText(tag).width;
+                lctx.fillStyle = "#c8d8e8";
+                lctx.fillText(tag, px + 7, py + 5); // 7 and 5 are heuristic adjustments to make the texts position better
+                px += tw + TAG_SPACING;
+            });
+
+            const labelTex = new THREE.CanvasTexture(labelCanvas);
+            const labelMat = new THREE.MeshBasicMaterial({
+                map: labelTex,
+                transparent: true,
+            });
+            const labelGeo = new THREE.PlaneGeometry(CARD_W, LABEL_H);
+            const labelMesh = new THREE.Mesh(labelGeo, labelMat);
+            // Position relative to card: just below card bottom, slightly in front
+            labelMesh.position.set(
+                0,
+                -(CARD_H / 2 + LABEL_GAP + LABEL_H / 2),
+                CARD_D / 2 + 0.001
+            );
+            mesh.add(labelMesh);
 
             // Store base pose for animation
             const basePos = mesh.position.clone();
@@ -211,28 +275,38 @@
         }
         animate(0);
 
-        // ── Resize ───────────────────────────────────────────────────────────
-        function onResize() {
-            const w = canvasEl.clientWidth;
-            const h = canvasEl.clientHeight;
-            camera.aspect = w / h;
+        // ── Resize (ResizeObserver so canvas tracks container, not window) ───
+        const ro = new ResizeObserver((entries) => {
+            const { width, height } = entries[0].contentRect;
+            if (width <= MOBILE_BREAKPOINT) {
+                isMobile = true;
+                return;
+            }
+            if (height === 0) return;
+            camera.aspect = width / height;
             camera.updateProjectionMatrix();
-            renderer.setSize(w, h);
-        }
-        window.addEventListener("resize", onResize);
+            renderer.setSize(width, height, false); // false = don't set inline style
+        });
+        ro.observe(canvasEl);
 
         // ── Cleanup ──────────────────────────────────────────────────────────
         dispose = () => {
             cancelAnimationFrame(animId);
-            window.removeEventListener("resize", onResize);
+            ro.disconnect();
             canvasEl.removeEventListener("mousemove", onMouseMove);
             canvasEl.removeEventListener("mousemove", onMouseMoveRay);
             canvasEl.removeEventListener("click", onClick);
+            gradTex.dispose();
             cards.forEach(({ mesh }) => {
                 mesh.geometry.dispose();
                 mesh.material.forEach?.((m) => {
                     m.map?.dispose();
                     m.dispose();
+                });
+                mesh.children.forEach((child) => {
+                    child.geometry.dispose();
+                    child.material.map?.dispose();
+                    child.material.dispose();
                 });
             });
             renderer.dispose();
@@ -264,7 +338,8 @@
 <style>
     .gallery-canvas {
         width: 100%;
-        height: 480px;
+        height: 100%;
+        min-height: 400px;
         display: block;
     }
 

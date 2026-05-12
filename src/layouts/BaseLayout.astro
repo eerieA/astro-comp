@@ -14,7 +14,7 @@ const summary = marked.parse(summaryMarkdown);
 import { skills } from "../content/arrays";
 ---
 
-<html lang="en" class="overflow-hidden">
+<html lang="en" class="overflow-hidden h-full">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -32,14 +32,14 @@ import { skills } from "../content/arrays";
         <title>{SITE_NAME}</title>
     </head>
     <body
-        class="text-primary flex flex-col items-center justify-items-stretch"
+        class="h-full text-primary flex flex-col items-center justify-items-stretch"
         style="background-color: var(--color-bg);"
     >
         <Header currentPage={currentPage} />
 
         <!-- Main layout container -->
         <div
-            class="w-full sm:w-full lg:max-w-2/3 sm:px-2 lg:px-4 py-6 flex flex-col lg:flex-row gap-6"
+            class="w-full sm:w-full lg:max-w-2/3 sm:px-2 lg:px-4 py-6 flex flex-col lg:flex-row gap-6 flex-1 min-h-0"
         >
             <!-- Sidebar -->
             <aside
@@ -61,7 +61,7 @@ import { skills } from "../content/arrays";
             </aside>
 
             <!-- Page content -->
-            <main class="w-full flex flex-col gap-y-4">
+            <main class="w-full h-full flex flex-col gap-y-4">
                 <slot />
             </main>
         </div>
