@@ -1,88 +1,169 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-:root {
-    /* light-mode values */
-    --color-primary: #282828;
+/* ─── Theme: Foggy Morning (default) ─────────────────────────────────────── */
+:root,
+[data-theme="foggy-morning"] {
+    --color-primary: #3a3a3a;
     --color-primary-active: #111111;
-    --color-primary-hovered: #646464;
-    --color-white: #fefefe;
-    --color-neutral-100: #f3f3f3;
-    --color-neutral-200: #e3e3e3;
-    --color-neutral-600: #444444;
-    --color-cyan-500: #646464;
+    --color-primary-hovered: #666666;
+    --color-white: #f0eeeb;
+    --color-neutral-100: #e8e8e2;
+    --color-neutral-200: #d0d0c8;
+    --color-neutral-600: #555555;
+    --color-cyan-500: #7a9eab;
+    --color-bg: #f0eeeb;
+    --color-header-bg: #e8e6e1;
 }
 
-[data-theme="dark"] {
-    /* dark-mode overrides */
-    --color-primary: #eeeeee;
+/* ─── Theme: Starry Night ─────────────────────────────────────────────────── */
+[data-theme="starry-night"] {
+    --color-primary: #e8e8f0;
     --color-primary-active: #ffffff;
-    --color-primary-hovered: #e0e0e0;
-    --color-white: #282828;
-    --color-neutral-100: #d0d0d0;
-    --color-neutral-200: #505050;
-    --color-neutral-600: #444444;
-    --color-cyan-500: #d6d6d6;
+    --color-primary-hovered: #b0b8d0;
+    --color-white: #0d1b2a;
+    --color-neutral-100: #1a2a3a;
+    --color-neutral-200: #253545;
+    --color-neutral-600: #8090a8;
+    --color-cyan-500: #f5d76e;
+    --color-bg: #0a1520;
+    --color-header-bg: #0d1b2a;
 }
 
+/* ─── Theme: Cyberpunk 2077 ───────────────────────────────────────────────── */
+[data-theme="cyberpunk"] {
+    --color-primary: #ff2d78;
+    --color-primary-active: #ffffff;
+    --color-primary-hovered: #ff2d78;
+    --color-white: #0e0e14;
+    --color-neutral-100: #1a1a24;
+    --color-neutral-200: #252535;
+    --color-neutral-600: #888;
+    --color-cyan-500: #00f0ff;
+    --color-bg: #0a0a12;
+    --color-header-bg: #0e0e14;
+}
+
+/* ─── Theme: Nier Automata ────────────────────────────────────────────────── */
+[data-theme="nier"] {
+    --color-primary: #1a1a1a;
+    --color-primary-active: #000000;
+    --color-primary-hovered: #444444;
+    --color-white: #ebe8e2;
+    --color-neutral-100: #e0ddd8;
+    --color-neutral-200: #c8c5be;
+    --color-neutral-600: #555555;
+    --color-cyan-500: #b8860b;
+    --color-bg: #ebe8e2;
+    --color-header-bg: #f0ede8;
+}
+
+/* ─── Theme: NASA White ───────────────────────────────────────────────────── */
+[data-theme="nasa"] {
+    --color-primary: #1b2a4a;
+    --color-primary-active: #0b1a3a;
+    --color-primary-hovered: #2e4a80;
+    --color-white: #f8f9fb;
+    --color-neutral-100: #f0f2f5;
+    --color-neutral-200: #dde2ea;
+    --color-neutral-600: #4a5a70;
+    --color-cyan-500: #1a56db;
+    --color-bg: #f8f9fb;
+    --color-header-bg: #dde2ea;
+}
+
+/* ─── Tailwind theme bridge ───────────────────────────────────────────────── */
 @theme {
-
-    /* --color-*: initial; */
-    --color-primary: {
-        color: var(--color-primary) !important;
-    }
-
-    --color-primary-active: {
-        color: var(--color-primary-active) !important;
-    }
-
-    --color-primary-hovered: {
-        color: var(--color-primary-hovered) !important;
-    }
-
-    --color-white: {
-        color: var(--color-white) !important;
-    }
-
-    --color-neutral-100: {
-        color: var(--color-neutral-100) !important;
-    }
-
-    --color-neutral-200: {
-        color: var(--color-neutral-200) !important;
-    }
-
-    --color-neutral-600: {
-        color: var(--color-neutral-600) !important;
-    }
-
-    --color-cyan-500: {
-        color: var(--color-cyan-500) !important;
-    }
+    --color-primary: var(--color-primary);
+    --color-primary-active: var(--color-primary-active);
+    --color-primary-hovered: var(--color-primary-hovered);
+    --color-white: var(--color-white);
+    --color-neutral-100: var(--color-neutral-100);
+    --color-neutral-200: var(--color-neutral-200);
+    --color-neutral-600: var(--color-neutral-600);
+    --color-cyan-500: var(--color-cyan-500);
 }
 
-/* Target all scrollbars in the site */
+/* ─── Starry Night: twinkling stars ──────────────────────────────────────── */
+[data-theme="starry-night"] body::before,
+[data-theme="starry-night"] body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Layer 1 — small stars */
+[data-theme="starry-night"] body::before {
+    background-image:
+        radial-gradient(1px 1px at 10% 15%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 40%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 8%,  #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 55%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 20%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 82% 72%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 35%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 80%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 33% 62%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 88%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 77% 5%,  #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 48% 30%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 5%  50%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 95% 60%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 20% 95%, #fff 0%, transparent 100%);
+    animation: twinkle-a 4s ease-in-out infinite alternate;
+}
+
+/* Layer 2 — larger/yellow stars */
+[data-theme="starry-night"] body::after {
+    background-image:
+        radial-gradient(2px 2px at 18% 25%, #f5d76e 0%, transparent 100%),
+        radial-gradient(2px 2px at 44% 70%, #f5d76e 0%, transparent 100%),
+        radial-gradient(2px 2px at 63% 12%, #ffffffcc 0%, transparent 100%),
+        radial-gradient(2px 2px at 85% 48%, #f5d76e 0%, transparent 100%),
+        radial-gradient(2px 2px at 30% 90%, #ffffffcc 0%, transparent 100%),
+        radial-gradient(2px 2px at 72% 80%, #f5d76e 0%, transparent 100%),
+        radial-gradient(1px 1px at 50% 45%, #fff 0%, transparent 100%),
+        radial-gradient(2px 2px at 8%  68%, #ffffffcc 0%, transparent 100%);
+    animation: twinkle-b 5.5s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle-a {
+    from { opacity: 0.6; }
+    to   { opacity: 1;   }
+}
+
+@keyframes twinkle-b {
+    from { opacity: 0.3; }
+    to   { opacity: 0.9; }
+}
+
+/* Keep page content above star layers */
+[data-theme="starry-night"] body > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── Cyberpunk: neon glow on accent elements ─────────────────────────────── */
+[data-theme="cyberpunk"] a:hover {
+    text-shadow: 0 0 8px var(--color-cyan-500);
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
-
-/* Track (background) */
 ::-webkit-scrollbar-track {
     background: var(--color-white);
 }
-
-/* Thumb (the draggable bar) */
 ::-webkit-scrollbar-thumb {
     background-color: var(--color-primary-hovered);
     border-radius: 4px;
     border: 2px solid transparent;
-    /* for inset effect */
     background-clip: content-box;
 }
-
-/* Thumb on hover */
 ::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-primary-active);
 }
@@ -91,4 +172,6 @@ body {
     margin: 0;
     font-family: sans-serif;
     padding: 1rem;
+    background-color: var(--color-bg);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
