@@ -66,15 +66,42 @@ Enhance the existing Astro portfolio with interactive components, multiple visua
 **Components**:
 - `GalleryCanvas.svelte` - owns the Three.js lifecycle (renderer, scene, camera, animation loop, resize, cleanup)
 
-**Features**:
-- Cards are thin 3D box meshes with static screenshot textures on the face
-- Staggered spatial grid layout with small depth offsets and slight rotations for cinematic feel
-- Subtle idle float animation per card
-- Raycasting-driven hover: scale + glow response on the hovered card
-- Scroll interpolation: gallery shifts position as user scrolls through the section
-- Minimal camera movement (slight parallax, no full navigation)
-- Optional subtle bloom postprocessing
-- Mobile: fall back to stacked DOM grid (no Three.js) to avoid performance issues on low-power devices
+**Finalized design decisions** (confirmed in conversation):
+
+| Concern | Decision |
+|---------|----------|
+| Layout | 3×2 grid (3 cols, 2 rows); each card has random Z depth offset (±30px) and Y-rotation offset (±5–10°) for cinematic feel |
+| Future expansion | Grid rows are scrollable for when project count exceeds 6; 3D scrollbar deferred to later |
+| Card texture | Static screenshot JPGs from `public/images/projects/`, one per project — no video |
+| Individual animation | Slow jiggling around 2 local axes (X + Y rotation), each card has its own phase offset |
+| Mouse parallax | Entire card group translates gently relative to mouse position over the canvas |
+| Hover response | Emissive color boost + scale up on hovered card (no duplicate mesh glow — performance) |
+| Click | Opens project link (`arrays.ts`) in a new browser tab |
+| Mobile fallback | DOM grid shown on narrow viewports; Three.js not initialised |
+| Postprocessing | Skipped (no bloom) — keep it lean |
+
+**Image filename → project mapping**:
+| File | Project |
+|------|---------|
+| `ndl-view.jpg` | NDL View (2025) |
+| `astro-comp.jpg` | Astro Compact (2025) |
+| `git-peek.jpg` | Git Peek (2024) |
+| `coding-quizzes.jpg` | Coding Quizzes (2024) |
+| `webgl-toon-shading.jpg` | WebGL Toon Shading (2025) |
+| `webgl-vertex-exp.jpg` | WebGL Vertex Explosion (2025) |
+
+**Implementation build order**:
+1. Canvas mount + renderer init
+2. Scene, camera, lighting
+3. Card mesh creation (6 cards, plain boxes)
+4. Texture loading per card
+5. Staggered spatial grid layout (depth + Y-rotation offsets)
+6. Per-card jiggle animation (local X + Y rotation, phase-offset per card)
+7. Mouse parallax on card group
+8. Raycasting hover (emissive boost + scale)
+9. Click → open project link in new tab
+10. Resize handler + onDestroy cleanup
+11. Mobile DOM fallback
 
 **Tech**:
 - `three` (vanilla, no React Three Fiber)
@@ -83,8 +110,23 @@ Enhance the existing Astro portfolio with interactive components, multiple visua
 
 **Files**:
 - Create: `src/components/GalleryCanvas.svelte`
-- Add: static project screenshot images to `public/images/projects/`
+- Screenshots already added to `public/images/projects/` ✓
+- `src/pages/index.astro` modified in Phase 4 (not Phase 3)
+
+---
+
+## Phase 4: Integration
+
+**Goal**: Wire everything together on main page
+
+- Replace current project list with `ProjectCarousel`
+- Add theme toggle to Header
+- Ensure theme persists across navigation
+- Test mobile responsiveness
+
+**Files**:
 - Modify: `src/pages/index.astro`
+- Modify: `src/components/Header.astro`
 
 ---
 
@@ -136,21 +178,6 @@ jobs:
 **Files**:
 - Create: `.github/workflows/generate-resume.yml`
 - Modify: `src/print-resume.js` (iterate variants, save `public/resume-<variant>.pdf` per variant)
-
----
-
-## Phase 4: Integration
-
-**Goal**: Wire everything together on main page
-
-- Replace current project list with `ProjectCarousel`
-- Add theme toggle to Header
-- Ensure theme persists across navigation
-- Test mobile responsiveness
-
-**Files**:
-- Modify: `src/pages/index.astro`
-- Modify: `src/components/Header.astro`
 
 ---
 
