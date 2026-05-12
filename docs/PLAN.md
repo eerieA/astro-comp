@@ -21,7 +21,7 @@ Enhance the existing Astro portfolio with interactive components, multiple visua
 
 ---
 
-## Phase 1: Rolling Tag Banner
+## Phase 1: Rolling Tag Banner ✅ DONE
 
 **Goal**: Replace current static skills section with animated tag banner
 
@@ -34,7 +34,7 @@ Enhance the existing Astro portfolio with interactive components, multiple visua
 
 ---
 
-## Phase 2: Theme System
+## Phase 2: Theme System ✅ DONE
 
 **Goal**: 5 switchable themes with full-site coverage
 
@@ -59,7 +59,7 @@ Enhance the existing Astro portfolio with interactive components, multiple visua
 
 ---
 
-## Phase 3: Interactive Project Grid
+## Phase 3: Interactive Project Grid ✅ DONE
 
 **Goal**: Embedded Three.js scene with a spatial grid of interactive 3D project cards
 
@@ -115,18 +115,19 @@ Enhance the existing Astro portfolio with interactive components, multiple visua
 
 ---
 
-## Phase 4: Integration
+## Phase 4: Integration ✅ DONE
 
 **Goal**: Wire everything together on main page
 
-- Replace current project list with `ProjectCarousel`
-- Add theme toggle to Header
-- Ensure theme persists across navigation
-- Test mobile responsiveness
+- ✅ Replace current project list with `GalleryCanvas` (3D gallery)
+- ✅ Add theme toggle (floating `ThemeToggle.svelte`, `client:load`)
+- ✅ Theme persists across navigation via localStorage + flash-prevention script
+- ✅ Mobile responsiveness: `ResizeObserver`-driven breakpoint (560px), DOM grid fallback
 
-**Files**:
-- Modify: `src/pages/index.astro`
-- Modify: `src/components/Header.astro`
+**Files modified**:
+- `src/pages/index.astro`
+- `src/components/Header.astro`
+- `src/layouts/BaseLayout.astro`
 
 ---
 
@@ -197,16 +198,16 @@ jobs:
 
 1. ~~Tag banner~~ ✓ done
 2. ~~SSR + `?aud=` resume variants~~ ✓ done
-3. Remove existing dark/light toggle from `Header.astro`
-4. Theme system foundation (CSS variables + localStorage)
-5. Theme CSS for all 5 themes
-6. Theme toggle UI (floating button)
-7. Install `@astrojs/svelte`, `svelte`, `three`
-8. Add static project screenshot images to `public/images/projects/`
-9. Build `GalleryCanvas.svelte` (scene, cards, raycasting, hover, float animation)
-10. Scroll interpolation for gallery
-11. Mobile fallback (DOM grid)
-12. Final integration into `index.astro`
+3. ~~Remove existing dark/light toggle from `Header.astro`~~ ✓ done
+4. ~~Theme system foundation (CSS variables + localStorage)~~ ✓ done
+5. ~~Theme CSS for all 5 themes~~ ✓ done
+6. ~~Theme toggle UI (floating button)~~ ✓ done
+7. ~~Install `@astrojs/svelte`, `svelte`, `three`~~ ✓ done
+8. ~~Add static project screenshot images to `public/images/projects/`~~ ✓ done
+9. ~~Build `GalleryCanvas.svelte` (scene, cards, raycasting, hover, float animation)~~ ✓ done
+10. ~~Mouse parallax on card group~~ ✓ done (replaced scroll interpolation — see Phase 3 decisions)
+11. ~~Mobile fallback (DOM grid)~~ ✓ done
+12. ~~Final integration into `index.astro`~~ ✓ done
 13. GitHub Actions workflow for PDF generation
 
 ---
