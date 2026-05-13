@@ -152,15 +152,17 @@
             lctx.globalAlpha = 1.0; // resetting to 1.0 right after keeps the name and tag text fully opaque
 
             // Project name
-            lctx.font = "bold 16px sans-serif";
-            lctx.fillStyle = "#e8f0f8";
-            lctx.shadowColor = "rgba(0,0,0,0.4)";
+            lctx.font = "bold 18px sans-serif";
+            lctx.fillStyle = "#ffffff";
+            lctx.shadowColor = "rgba(0,0.05,0.03,0.65)";
             lctx.shadowBlur = 2;
+            lctx.shadowOffsetY = 2;
             lctx.fillText(proj.title, 8, NAME_Y);
-            lctx.shadowBlur = 0;
+            lctx.shadowBlur = 0;    // resetting things
+            lctx.shadowOffsetY = 0;
 
             // Tag pill backgrounds + text
-            lctx.font = "regular 10px sans-serif";
+            lctx.font = "16px sans-serif";
             const TAG_PAD_X = 4;
             const TAG_PAD_Y = 2;
             const TAG_H = 14;
@@ -172,7 +174,7 @@
                 lctx.beginPath();
                 lctx.roundRect(px, TAGS_Y - TAG_H + TAG_PAD_Y, pillW, TAG_H, 4);
                 lctx.fill();
-                lctx.fillStyle = "#253545";
+                lctx.fillStyle = "#1a2a3a";
                 lctx.fillText(tag, px + TAG_PAD_X, TAGS_Y);
                 px += pillW + TAG_SPACING * 0.6;
             });
