@@ -1,5 +1,6 @@
 <script>
     import { onMount, onDestroy } from "svelte";
+    import { vertexShader, fragmentShader } from "./HalftoneShader.js";
 
     const { projects } = $props();
 
@@ -51,32 +52,19 @@
         scene.add(dirLight);
 
         // ── Card geometry ────────────────────────────────────────────────────
-        // Card face is 16:9-ish, thin depth
+        // Card face is 1:1-ish, thin depth
         const CARD_W = 1.0;
         const CARD_H = 1.0;
-        const CARD_D = 0.2;
+        const CARD_D = 0.15;
 
-        // Grid: 2 cols × N rows, spacing
-        const COLS = 2;
+        // Grid: 3 cols × N rows, spacing
+        const COLS = 3;
         const GAP_X = 0.28;
         const GAP_Y = 0.48;
         const GRID_W = COLS * CARD_W + (COLS - 1) * GAP_X;
 
         // ── Texture loader ───────────────────────────────────────────────────
         const loader = new THREE.TextureLoader();
-
-        // ── Shared gradient texture for side/back faces ──────────────────────
-        // Drawn once on a small offscreen canvas, shared across all cards
-        const gradCanvas = document.createElement("canvas");
-        gradCanvas.width = 64;
-        gradCanvas.height = 64;
-        const gctx = gradCanvas.getContext("2d");
-        const grad = gctx.createLinearGradient(0, 0, 64, 64);
-        grad.addColorStop(0, "#1e2a3a");
-        grad.addColorStop(1, "#0d1520");
-        gctx.fillStyle = grad;
-        gctx.fillRect(0, 0, 64, 64);
-        const gradTex = new THREE.CanvasTexture(gradCanvas);
 
         // ── Card group (parallax target) ─────────────────────────────────────
         const group = new THREE.Group();
@@ -87,7 +75,7 @@
 
         // Label strip dimensions
         const LABEL_H = 0.22;
-        const LABEL_GAP = 0.10; // gap between card bottom and label top
+        const LABEL_GAP = 0.04; // gap between card bottom and label top
 
         projects.forEach((proj, i) => {
             const col = i % COLS;
@@ -107,21 +95,39 @@
             const texture = loader.load(`/images/projects/${proj.image}`);
             texture.colorSpace = THREE.SRGBColorSpace;
 
-            const faceMat = new THREE.MeshStandardMaterial({
-                map: texture,
-                emissive: new THREE.Color(0x000000),
-                emissiveIntensity: 0,
+            const makeShaderMat = (tex) => new THREE.ShaderMaterial({
+                vertexShader,
+                fragmentShader,
+                transparent: true,
+                uniforms: {
+                    uTexture:      { value: tex },
+                    uTime:         { value: 0 },
+                    uHover:        { value: 0 },
+                    uRevealRadius: { value: 0 },
+                    uAlpha:        { value: 0.50 },
+                },
             });
+
+            const baseFaceMat = new THREE.MeshBasicMaterial({ map: texture });
             const sideMat = new THREE.MeshStandardMaterial({
-                map: gradTex,
-                emissive: new THREE.Color(0x000000),
-                emissiveIntensity: 0,
+                color: 0xa8c7e0,
+                transparent: true,
+                opacity: 0.45,
+                roughness: 0.4,
+                metalness: 0.3,
             });
 
             // BoxGeometry face order: +X, -X, +Y, -Y, +Z (front), -Z (back)
-            const materials = [sideMat, sideMat, sideMat, sideMat, faceMat, sideMat];
+            const materials = [sideMat, sideMat, sideMat, sideMat, baseFaceMat, sideMat];
             const geo = new THREE.BoxGeometry(CARD_W, CARD_H, CARD_D);
             const mesh = new THREE.Mesh(geo, materials);
+
+            // Overlay plane: sits just in front of the box face, carries the hex shader
+            const overlayMat = makeShaderMat(texture);
+            const overlayGeo = new THREE.PlaneGeometry(CARD_W, CARD_H);
+            const overlayMesh = new THREE.Mesh(overlayGeo, overlayMat);
+            overlayMesh.position.set(0, 0, CARD_D / 2 + 0.002);
+            mesh.add(overlayMesh);
 
             mesh.position.set(bx, by, depthOffset);
             mesh.rotation.y = yRotOffset;
@@ -131,25 +137,44 @@
             const labelCanvas = document.createElement("canvas");
             const LCW = 256;
             const LCH = 56;
-            const TAG_SPACING = 22;
+            const NAME_Y = 20;   // baseline for project name
+            const TAGS_Y = 44;   // baseline for tag text
+            const TAG_SPACING = 6;
             labelCanvas.width = LCW;
             labelCanvas.height = LCH;
             const lctx = labelCanvas.getContext("2d");
 
-            // Background — solid color
-            lctx.fillStyle = "#1e2a3a";
-            lctx.roundRect(0, 0, LCW, LCH, 6);
+            // Strip background
+            lctx.globalAlpha = 0.5; // tweak this for the transparency of only the strip background
+            lctx.fillStyle = "#5e656b";
+            lctx.roundRect(0, 0, LCW, LCH, 2);
             lctx.fill();
+            lctx.globalAlpha = 1.0; // resetting to 1.0 right after keeps the name and tag text fully opaque
 
-            // Tag text (no pill background)
-            lctx.font = "bold 24px sans-serif";
-            let px = 4;
-            const py = LCH / 2;
+            // Project name
+            lctx.font = "bold 16px sans-serif";
+            lctx.fillStyle = "#e8f0f8";
+            lctx.shadowColor = "rgba(0,0,0,0.4)";
+            lctx.shadowBlur = 2;
+            lctx.fillText(proj.title, 8, NAME_Y);
+            lctx.shadowBlur = 0;
+
+            // Tag pill backgrounds + text
+            lctx.font = "regular 10px sans-serif";
+            const TAG_PAD_X = 4;
+            const TAG_PAD_Y = 2;
+            const TAG_H = 14;
+            let px = 6;
             tags.forEach((tag) => {
                 const tw = lctx.measureText(tag).width;
-                lctx.fillStyle = "#c8d8e8";
-                lctx.fillText(tag, px + 7, py + 5); // 7 and 5 are heuristic adjustments to make the texts position better
-                px += tw + TAG_SPACING;
+                const pillW = tw + TAG_PAD_X * 2;
+                lctx.fillStyle = "#b0b8d0";
+                lctx.beginPath();
+                lctx.roundRect(px, TAGS_Y - TAG_H + TAG_PAD_Y, pillW, TAG_H, 4);
+                lctx.fill();
+                lctx.fillStyle = "#253545";
+                lctx.fillText(tag, px + TAG_PAD_X, TAGS_Y);
+                px += pillW + TAG_SPACING * 0.6;
             });
 
             const labelTex = new THREE.CanvasTexture(labelCanvas);
@@ -173,7 +198,7 @@
             const phase = Math.random() * Math.PI * 2;
 
             group.add(mesh);
-            cards.push({ mesh, basePos, baseRotY, phase, proj });
+            cards.push({ mesh, basePos, baseRotY, phase, proj, overlayMat, sideMat, baseFaceMat, texture });
         });
 
         // ── Mouse parallax state ─────────────────────────────────────────────
@@ -192,7 +217,6 @@
         const pointer = new THREE.Vector2();
         let hoveredCard = null;
 
-        const HOVER_EMISSIVE = new THREE.Color(0xe3f5ff);
         const HOVER_SCALE = 1.2;
         const NORMAL_SCALE = 1.0;
         const LERP_SPEED = 0.12;
@@ -239,35 +263,40 @@
             // Raycasting hover
             raycaster.setFromCamera(pointer, camera);
             const meshes = cards.map((c) => c.mesh);
-            const hits = raycaster.intersectObjects(meshes);
-            const hit = hits.length > 0 ? cards.find((c) => c.mesh === hits[0].object) : null;
+            const hits = raycaster.intersectObjects(meshes, true);
+            const hit = hits.length > 0
+                ? cards.find((c) => c.mesh === hits[0].object || c.mesh === hits[0].object.parent)
+                : null;
 
             if (hit !== hoveredCard) {
-                // Un-hover previous
-                if (hoveredCard) {
-                    hoveredCard.mesh.material.forEach?.((m) => {
-                        m.emissiveIntensity = 0;
-                        m.emissive.set(0x000000);
-                    });
-                }
                 hoveredCard = hit;
                 canvasEl.style.cursor = hit ? "pointer" : "default";
             }
 
-            // Lerp scale + emissive for hovered card
+            // Lerp scale + shader uniforms for hovered card
             cards.forEach((card) => {
                 const isHovered = card === hoveredCard;
                 const targetScale = isHovered ? HOVER_SCALE : NORMAL_SCALE;
                 card.mesh.scale.x += (targetScale - card.mesh.scale.x) * 0.1;
                 card.mesh.scale.y += (targetScale - card.mesh.scale.y) * 0.1;
 
-                const faceMat = card.mesh.material[4]; // +Z face
+                if (!isHovered) {
+                    card.overlayMat.uniforms.uTime.value += 0.016;
+                }
+
+                const targetHover = isHovered ? 1.0 : 0.0;
+                card.overlayMat.uniforms.uHover.value += (targetHover - card.overlayMat.uniforms.uHover.value) * 0.1;
+
+                // Reveal radius: expand on hover, reset instantly on un-hover
+                const REVEAL_SPEED = 0.025;
+                const REVEAL_MAX   = 1.0;
                 if (isHovered) {
-                    faceMat.emissive.lerp(HOVER_EMISSIVE, 0.1);
-                    faceMat.emissiveIntensity = 0.25;
+                    card.overlayMat.uniforms.uRevealRadius.value = Math.min(
+                        card.overlayMat.uniforms.uRevealRadius.value + REVEAL_SPEED,
+                        REVEAL_MAX
+                    );
                 } else {
-                    faceMat.emissive.lerp(new THREE.Color(0x000000), 0.1);
-                    faceMat.emissiveIntensity = Math.max(0, faceMat.emissiveIntensity - 0.02);
+                    card.overlayMat.uniforms.uRevealRadius.value = 0;
                 }
             });
 
@@ -296,13 +325,12 @@
             canvasEl.removeEventListener("mousemove", onMouseMove);
             canvasEl.removeEventListener("mousemove", onMouseMoveRay);
             canvasEl.removeEventListener("click", onClick);
-            gradTex.dispose();
-            cards.forEach(({ mesh }) => {
+            cards.forEach(({ mesh, overlayMat, sideMat, baseFaceMat, texture }) => {
                 mesh.geometry.dispose();
-                mesh.material.forEach?.((m) => {
-                    m.map?.dispose();
-                    m.dispose();
-                });
+                texture.dispose();
+                baseFaceMat.dispose();
+                overlayMat.dispose();
+                sideMat.dispose(); // MeshStandardMaterial
                 mesh.children.forEach((child) => {
                     child.geometry.dispose();
                     child.material.map?.dispose();

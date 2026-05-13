@@ -12,7 +12,7 @@ export const projects = [
         videoSrc: "/videos/ndl-view.mp4",
         link: "https://github.com/eerieA/ndl-view",
         description: "A minimalist viewer for Nasdaq Data Link crypto exchange rate data.",
-        tags: ["JavaScript", "Angular", "RESTful API"]
+        tags: ["JavaScript", "Angular", "REST API"]
     },
     {
         title: "Astro Compact (2025)",
