@@ -29,7 +29,7 @@ Lead Designer, Civil Engineer @ I&S Studio, Huayu Engineering, etc., *Pre-Feb 20
 
 #### Selected Projects
 
-Lightweight Markdown Workspace *(Personal)*, *Apr 2026 – Jun 2026*
+Lightweight Markdown Workspace *(Personal)*, *Apr 2026 - Jun 2026*
 - Engineered a local-first Markdown workspace using React, TypeScript, and Tauri with dual persistence layers supporting both IndexedDB and native filesystem-backed vault storage
 - Implemented a cross-folder wikilink indexing and resolution pipeline enabling constant-time note title lookup across 500+ Markdown documents, including missing-reference detection and incremental search updates
 - Reduced infrastructure complexity and runtime overhead by eliminating backend services, cloud synchronization, and remote databases, achieving <300 ms auto-save latency with fully offline operation and direct local disk persistence

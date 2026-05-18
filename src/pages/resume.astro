@@ -6,17 +6,23 @@ import DownloadIcon from "../icons/download.astro";
 import { marked } from "marked";
 
 import defaultMd from "../content/resume.md?raw";
-import feMd from "../content/resume-fe.md?raw";
+import frontEndMd from "../content/resume-front-end.md?raw";
 
-// Add new variants here as you create more resume-*.md files
-const variants: Record<string, string> = {
-    "front-end": feMd,
-    "fe": feMd,
+// canonical key → markdown content (also determines PDF filename: resume-<key>.pdf)
+const canonicalVariants: Record<string, string> = {
+    "front-end": frontEndMd,
+};
+
+// URL ?aud= aliases → canonical key
+const audAliases: Record<string, string> = {
+    "fe": "front-end",
 };
 
 const aud = Astro.url.searchParams.get("aud") ?? "";
-const raw = variants[aud] ?? defaultMd;
+const canonical = canonicalVariants[aud] ? aud : (audAliases[aud] ?? "");
+const raw = canonicalVariants[canonical] ?? defaultMd;
 const md = marked.parse(raw) as string;
+const pdfHref = canonical ? `/resume-${canonical}.pdf` : "/resume.pdf";
 ---
 
 <BaseLayout title="Resume" currentPage="resume">
@@ -29,7 +35,7 @@ const md = marked.parse(raw) as string;
             <!-- Download Button -->
             <div class="flex justify-center">
                 <a
-                    href="/resume.pdf"
+                    href={pdfHref}
                     download
                     class="absolute top-2 right-2 pl-1 pr-2 py-[2px] flex flex-row items-center bg-primary rounded-xs text-sm text-neutral-200 hover:bg-neutral-200 hover:text-primary hover:shadow-sm transition-all"
                 >

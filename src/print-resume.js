@@ -1,32 +1,35 @@
 import { launch } from 'puppeteer';
 
-async function printResumeToPDF() {
-    // Launch the browser
-    const browser = await launch({ headless: true }); // Set headless to true to hide the browser window
+// canonical variant key → output PDF path
+// Add new variants here as you create more resume-<key>.md files
+const VARIANTS = {
+    'front-end': 'public/resume-front-end.pdf',
+};
+
+const PDF_OPTIONS = {
+    format: 'letter',
+    printBackground: true,
+    margin: { top: '10mm', right: '10mm', bottom: '10mm', left: '10mm' },
+};
+
+async function generatePDFs() {
+    const browser = await launch({ headless: true });
     const page = await browser.newPage();
-
-    // Navigate to the resume page
-    await page.goto('http://localhost:4321/resume-print', { waitUntil: 'networkidle0' });
-
-    // Optionally, adjust viewport to match preferred dimensions for printing
     await page.setViewport({ width: 1280, height: 800 });
 
-    await page.pdf({
-        path: './public/resume.pdf', // Output path
-        format: 'letter',
-        printBackground: true, // To include background colors
-        margin: {
-            top: '10mm',
-            right: '10mm',
-            bottom: '10mm',
-            left: '10mm',
-        },
-    });
+    // Default resume
+    await page.goto('http://localhost:4321/resume-print', { waitUntil: 'networkidle0' });
+    await page.pdf({ path: './public/resume.pdf', ...PDF_OPTIONS });
+    console.log('PDF saved: public/resume.pdf');
 
-    console.log('PDF saved as resume.pdf');
+    // Variant resumes
+    for (const [key, outPath] of Object.entries(VARIANTS)) {
+        await page.goto(`http://localhost:4321/resume-print?aud=${key}`, { waitUntil: 'networkidle0' });
+        await page.pdf({ path: `./${outPath}`, ...PDF_OPTIONS });
+        console.log(`PDF saved: ${outPath}`);
+    }
 
-    // Close the browser
     await browser.close();
 }
 
-printResumeToPDF();
+generatePDFs();

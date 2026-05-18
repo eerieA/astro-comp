@@ -128,6 +128,8 @@ Enhance the existing Astro portfolio with interactive components, multiple visua
 - `src/pages/index.astro`
 - `src/components/Header.astro`
 - `src/layouts/BaseLayout.astro`
+- `src/components/GalleryCanvas.svelte`
+- `src/components/HalftoneShader.js`
 
 ---
 

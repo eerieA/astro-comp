@@ -1,7 +1,20 @@
 ---
 import { marked } from "marked";
-import resumeMarkdown from "../content/resume.md?raw";
-const md = marked.parse(resumeMarkdown);
+import defaultMd from "../content/resume.md?raw";
+import frontEndMd from "../content/resume-front-end.md?raw";
+
+const canonicalVariants: Record<string, string> = {
+    "front-end": frontEndMd,
+};
+
+const audAliases: Record<string, string> = {
+    "fe": "front-end",
+};
+
+const aud = Astro.url.searchParams.get("aud") ?? "";
+const canonical = canonicalVariants[aud] ? aud : (audAliases[aud] ?? "");
+const raw = canonicalVariants[canonical] ?? defaultMd;
+const md = marked.parse(raw);
 ---
 
 <link rel="stylesheet" href="/styles/resume.css" />
