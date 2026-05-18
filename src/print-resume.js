@@ -13,7 +13,10 @@ const PDF_OPTIONS = {
 };
 
 async function generatePDFs() {
-    const browser = await launch({ headless: true });
+    const browser = await launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
     const page = await browser.newPage();
     await page.setViewport({ width: 1280, height: 800 });
 
