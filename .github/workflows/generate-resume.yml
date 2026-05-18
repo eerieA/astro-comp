@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/content/resume*.md'
+  workflow_dispatch:
 
 jobs:
   generate-pdf:
