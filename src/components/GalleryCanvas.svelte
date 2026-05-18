@@ -11,6 +11,11 @@
     // ── Canvas ref ──────────────────────────────────────────────────────────
     let canvasEl;
 
+    // ── Hover overlay state ──────────────────────────────────────────────────
+    let hoveredProj = $state(null);       // project object or null
+    let overlayX    = $state(0);          // px from canvas left
+    let overlayY    = $state(0);          // px from canvas top
+
     // ── Cleanup handle ──────────────────────────────────────────────────────
     let dispose = () => {};
 
@@ -273,6 +278,16 @@
             if (hit !== hoveredCard) {
                 hoveredCard = hit;
                 canvasEl.style.cursor = hit ? "pointer" : "default";
+                hoveredProj = hit ? hit.proj : null;
+            }
+
+            // Project hovered card centre to screen coords for the overlay div
+            if (hoveredCard) {
+                const worldPos = hoveredCard.mesh.getWorldPosition(new THREE.Vector3());
+                worldPos.project(camera);
+                const rect = canvasEl.getBoundingClientRect();
+                overlayX = ((worldPos.x + 1) / 2) * rect.width;
+                overlayY = ((-worldPos.y + 1 + 0.08) / 2) * rect.height; // adjusted downwards by 0.08
             }
 
             // Lerp scale + shader uniforms for hovered card
@@ -362,15 +377,53 @@
         {/each}
     </div>
 {:else}
-    <canvas bind:this={canvasEl} class="gallery-canvas"></canvas>
+    <div class="gallery-wrap">
+        <canvas bind:this={canvasEl} class="gallery-canvas"></canvas>
+        {#if hoveredProj}
+            <div
+                class="proj-tooltip"
+                style="left: {overlayX}px; top: {overlayY}px;"
+            >
+                {hoveredProj.description}
+            </div>
+        {/if}
+    </div>
 {/if}
 
 <style>
+    .gallery-wrap {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
     .gallery-canvas {
         width: 100%;
         height: 100%;
         min-height: 400px;
         display: block;
+    }
+
+    .proj-tooltip {
+        position: absolute;
+        transform: translate(-50%, 0);
+        margin-top: 0.6rem;
+        min-width: 210px;
+        max-width: 210px;
+        padding: 0.25rem 0.45rem;
+        background: var(--color-primary);
+        color: var(--color-white);
+        font-size: 0.875rem;
+        line-height: 1.45;
+        border-radius: 1px;
+        pointer-events: none;
+        backdrop-filter: blur(4px);
+        animation: tooltip-in 0.30s ease forwards;
+    }
+
+    @keyframes tooltip-in {
+        from { opacity: 0; transform: translate(-50%, 4px); }
+        to   { opacity: .85; transform: translate(-50%, 0);   }
     }
 
     .mobile-grid {
