@@ -59,7 +59,7 @@
 
         // Grid: 3 cols × N rows, spacing
         const COLS = 3;
-        const GAP_X = 0.28;
+        const GAP_X = 0.12;
         const GAP_Y = 0.48;
         const GRID_W = COLS * CARD_W + (COLS - 1) * GAP_X;
 
@@ -205,7 +205,7 @@
 
         // ── Mouse parallax state ─────────────────────────────────────────────
         let mouseNorm = { x: 0, y: 0 }; // -1..1
-        const PARALLAX_STRENGTH = 0.35;
+        const PARALLAX_STRENGTH = 0.15;
 
         function onMouseMove(e) {
             const rect = canvasEl.getBoundingClientRect();
@@ -219,7 +219,7 @@
         const pointer = new THREE.Vector2();
         let hoveredCard = null;
 
-        const HOVER_SCALE = 1.2;
+        const HOVER_SCALE = 1.15;
         const NORMAL_SCALE = 1.0;
         const LERP_SPEED = 0.12;
 
