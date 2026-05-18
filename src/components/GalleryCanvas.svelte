@@ -8,6 +8,15 @@
     const MOBILE_BREAKPOINT = 560;
     let isMobile = $state(false); // real value set in onMount (window not available during SSR)
 
+    // ── Mobile card description open state ───────────────────────────────────
+    let openDesc = $state(projects.map(() => false));
+
+    function toggleDesc(e, i) {
+        e.preventDefault();
+        e.stopPropagation();
+        openDesc = openDesc.map((v, j) => (j === i ? !v : v));
+    }
+
     // ── Canvas ref ──────────────────────────────────────────────────────────
     let canvasEl;
 
@@ -364,15 +373,31 @@
 {#if isMobile}
     <!-- Mobile DOM fallback -->
     <div class="mobile-grid">
-        {#each projects as proj}
+        {#each projects as proj, i}
             <a
                 href={proj.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="mobile-card"
             >
-                <img src={`/images/projects/${proj.image}`} alt={proj.title} />
-                <p>{proj.title}</p>
+                <div class="mobile-img-wrap">
+                    <img src={`/images/projects/${proj.image}`} alt={proj.title} />
+                    <div class="mobile-desc" class:open={openDesc[i]}>{proj.description}</div>
+                    <button
+                        class="mobile-chevron"
+                        class:open={openDesc[i]}
+                        onclick={(e) => toggleDesc(e, i)}
+                        aria-label={openDesc[i] ? "Hide description" : "Show description"}
+                    >&#8963;</button>
+                </div>
+                <p class="mobile-title">{proj.title}</p>
+                {#if proj.tags?.length}
+                    <div class="mobile-tags">
+                        {#each proj.tags.slice(0, 3) as tag}
+                            <span class="mobile-tag">{tag}</span>
+                        {/each}
+                    </div>
+                {/if}
             </a>
         {/each}
     </div>
@@ -436,20 +461,86 @@
     .mobile-card {
         display: flex;
         flex-direction: column;
-        gap: 0.4rem;
+        gap: 0.35rem;
         text-decoration: none;
         color: var(--color-primary);
     }
 
-    .mobile-card img {
+    .mobile-img-wrap {
+        position: relative;
         width: 100%;
         aspect-ratio: 16 / 10;
-        object-fit: cover;
+        overflow: hidden;
         border-radius: 4px;
     }
 
-    .mobile-card p {
+    .mobile-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .mobile-desc {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1.8rem;      /* resting: just tall enough to back the chevron */
+        display: flex;
+        align-items: flex-end;
+        padding: 0 0.5rem 1.6rem;
+        background: linear-gradient(to top, rgba(10,16,24,0.82) 0%, transparent 100%);
+        color: #e8edf2;
+        font-size: 0.65rem;
+        line-height: 1.4;
+        overflow: hidden;
+        transition: height 0.22s ease;
+        pointer-events: none;
+    }
+
+    .mobile-desc.open {
+        height: 100%;
+        padding-bottom: 1.8rem;
+    }
+
+    .mobile-chevron {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1.8rem;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        color: #e8edf2;
+        font-size: 0.75rem;
+        cursor: pointer;
+        padding-bottom: 0.2rem;
+    }
+
+    .mobile-chevron.open {
+        transform: rotate(180deg);
+    }
+
+    .mobile-title {
         font-size: 0.8rem;
         margin: 0;
+    }
+
+    .mobile-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .mobile-tag {
+        font-size: 0.65rem;
+        padding: 0.1rem 0.35rem;
+        border-radius: 3px;
+        background: var(--color-tag-bg, rgba(128,144,176,0.18));
+        color: var(--color-primary);
     }
 </style>

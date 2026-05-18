@@ -175,3 +175,11 @@ body {
     background-color: var(--color-bg);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* On mobile, override the layout's overflow-hidden so the card grid can scroll */
+@media (max-width: 560px) {
+    html, body {
+        overflow: auto !important;
+        height: auto !important;
+    }
+}
